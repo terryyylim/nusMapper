@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="mainApp">
+
+<head>
+	<meta charset="UTF-8">
+	<title>nusMapper</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
+	<script src="../controllers/app.js"></script>
+	<script src="../controllers/searchbar.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js"></script>
+	<!-- include all js files -->
+
+</head>
+
+<body ng-app="mainApp">
+	<ng-view></ng-view>
+
+	<div ui-view="searchbar"></div>
+	<div ng-include="searchbar.html"></div>
+	<div ui-view="core"></div>
+	<div ui-view="gem"></div>
+	<div ui-view="unrestrictedE"></div>	
+</body>

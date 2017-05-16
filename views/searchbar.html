@@ -1,0 +1,13 @@
+<!--<input type="text" ng-model="searchBox">-->
+
+	<div ng-controller="modules">
+		<h2>Choose your Modules for Mapping</h2>
+		<!--To insert code to display which filter being selected-->
+		<li ng-repeat="module in modules | filter:searchBox">
+			<p> You have selected: {{ moduleCode }} </p>
+		</li>
+	</div>
+
+	<div class="searchfield">
+		<form><input type="text" name="moduleCode" class="biginput" id="autocomplete"></form>
+	</div><!-- @end #searchfield -->
