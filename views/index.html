@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html ng-app="mainApp">
+<html>
 
 <head>
-	<meta charset="UTF-8">
 	<title>nusMapper</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<style>
+		.navbar { border-radius: 0; }
+	</style>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+
 	<script src="../controllers/app.js"></script>
 	<script src="../controllers/searchbar.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
@@ -14,12 +19,28 @@
 
 </head>
 
+<!-- apply our angular app to our website -->
 <body ng-app="mainApp">
-	<ng-view></ng-view>
 
-	<div ui-view="searchbar"></div>
-	<div ng-include="searchbar.html"></div>
+<!-- NAVIGATION -->
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" ui-sref="#">nusMapper</a>
+    </div>
+    <ul class="nav navbar-nav">
+        <li><a ui-sref="home">Home</a></li>
+        <li><a ui-sref="about">About</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+	<div ui-view></div>
+
+	<!--<div ui-view="searchbar"></div>
+	<div ui-sref="searchbar.html"></div>
 	<div ui-view="core"></div>
 	<div ui-view="gem"></div>
-	<div ui-view="unrestrictedE"></div>	
+	<div ui-view="unrestrictedE"></div>	-->
+</div>
 </body>
+</html>

@@ -1,8 +1,8 @@
 <!--<input type="text" ng-model="searchBox">-->
 
-	<div ng-controller="modules">
-		<h2>Choose your Modules for Mapping</h2>
-		<!--To insert code to display which filter being selected-->
+	<!--<div ng-controller="modules">
+		<h2>Choose your Modules for Mapping</h2>-->
+		<!--To insert code to display which filter being selected
 		<li ng-repeat="module in modules | filter:searchBox">
 			<p> You have selected: {{ moduleCode }} </p>
 		</li>
@@ -10,4 +10,15 @@
 
 	<div class="searchfield">
 		<form><input type="text" name="moduleCode" class="biginput" id="autocomplete"></form>
-	</div><!-- @end #searchfield -->
+	</div>--><!-- @end #searchfield -->
+
+
+<div class="jumbotron text-center">
+    <h1>The Homey Page</h1>
+    <p>This page demonstrates <span class="text-danger">nested</span> views.</p>
+
+    <a ui-sref=".list" class="btn btn-primary">List</a>
+    <a ui-sref=".paragraph" class="btn btn-danger">Paragraph</a>
+</div>
+
+</div>
