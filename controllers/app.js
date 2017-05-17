@@ -20,13 +20,13 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
         .state("gem", {
             url : "/gem",
             templateUrl : "gem.html"
-        });
-        .state("about", {
-            url: "/gem",
-            views {
+        })
+        .state('about', {
+            url: '/about',
+            views: {
 
                 // the main template will be placed here (relatively named)
-                '': { templateUrl: 'gem.html' },
+                '': { templateUrl: 'searchbar.html' },
 
                 // the child views will be defined here (absolutely named)
                 'columnOne@about': { template: 'Look I am a column!' },
@@ -37,7 +37,7 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
                     controller: 'searchController'
                 }
             }
-        })
+        });
     });
 
 mainApp.controller('searchController', function($scope) {

@@ -1,9 +1,9 @@
-app.controller('searchbar', function($scope, $http) {
-	$http.get("orbital.json")
-	.then(function(response) {
-		$scope.moduleData = response.data;
-	});
-});
+$scope.callRestService= function() {
+  $http({method: 'GET', url: '/search'}).
+    success(function(data, status, headers, config) {
+         $scope.results.push(data);  //retrieve results and add to existing results
+    })
+}
 
 /*app.controller('searchCtrl', function($scope) {
 	$scope.searches = [
