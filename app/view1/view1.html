@@ -4,17 +4,15 @@
 <input type="text" ng-model="search" class="form-control" id="myInput" onkeyup="myFunction()" placeholder="Type your module code here">
 
 <div ng-show="vm.modules && search">
-	<div ng-repeat="module in vm.modules | filter:search | limitTo: 10" >
-		<table id="myTable">
-			<tr class="header">
-				<th style="width:60%">Title</th>
-				<th style="width:40%">Code</th>
-			</tr>
-			<tr>
+	<table id="myTable">
+		<tr class="header">
+			<th style="width:60%">Title</th>
+			<th style="width:40%">Code</th>
+		</tr>
+		<tr ng-repeat="module in vm.modules | filter:search | limitTo: 10" >
+		
 				<td>{{module.moduleTitle}}</td>
 				<td>{{module.moduleCode}}</td>
-			</tr>
-		</table>
-	</div>
+		</tr>
+	</table>
 </div>
-</ul>
