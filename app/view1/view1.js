@@ -23,22 +23,10 @@ angular.module('myApp.view1', ['ngRoute'])
 //	availableTags.innerHTML = options;
 //}
 
-.controller('View1Ctrl', ["$http", "$q", "$scope", function($http,$q, $scope) {
-	getModules().then((data) => {
+.controller('View1Ctrl', ["$http", "$q", "$scope", "Module", function($http,$q, $scope, Module) {
+	Module.getMods().then((data) => {
 		console.log(data);
 		//lexical this (comes with the arrow, ES6 function)
 		this.modules = data;
 	});
-
-	function getModules(){
-		return $q(function(resolve,reject){
-			$http.get("orbital.json")
-			.then(function(response){
-				resolve(response.data);
-			}).catch(function(error){
-				reject(error);
-			});
-		});
-	}
-	
 }]);

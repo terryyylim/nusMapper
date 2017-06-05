@@ -11,8 +11,10 @@
 	<div ng-show="vm.modules && search">
 		<select>
 		<option ng-repeat="module in vm.modules | filter:search | limitTo: 10" value="{{module.moduleCode}}">
-			<li><td>{{module.moduleTitle}}</td>
-			<td>{{module.moduleCode}}</td></li>
+
+		
+			<li><td>{{module.moduleCode}}</td>
+			<td>{{module.moduleTitle}}</td></li>
 		</option>
 		</select>
 	</div>
