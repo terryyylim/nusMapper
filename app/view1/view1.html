@@ -4,7 +4,6 @@
 
 	<div ng-controller="View1Ctrl">
 	Module Mapping Begins!
-	<datalist id="modules"></datalist>
 	<!--onkeyup, is the calling of function after user releases his finger on keyboard-->
 	<input type="text" ng-model="vm.search" name="modules" class="navbar-form" id="myInput" placeholder="Type your module code here"/>
 
@@ -12,7 +11,6 @@
 		<select ng-model="vm.selected">
 		<option ng-repeat="module in vm.modules | filter: vm.search | limitTo: 10" value="{{module}}">
 
-		
 			<li><td>{{module.moduleCode}}</td>
 			<td>{{module.moduleTitle}}</td></li>
 		</option>
@@ -25,5 +23,4 @@
 		<button ng-click="vm.removeModule($index)"> remove </button>
 	</div>
 	</div>
-	
 

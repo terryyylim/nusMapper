@@ -26,11 +26,13 @@ angular.module('myApp.view1', ['ngRoute'])
 .controller('View1Ctrl', ["$http", "$q", "$scope", "Module", "Mapper", function($http,$q, $scope, Module, Mapper) {
 	this.Mapper = Mapper;
 
+
 	Module.getMods().then((data) => {
 		console.log(data);
 		//lexical this (comes with the arrow, ES6 function)
 		this.modules = data;
 	});
+
 
 	this.addModule = (module) => {
 		Mapper.add(module);
@@ -41,3 +43,4 @@ angular.module('myApp.view1', ['ngRoute'])
 	}
 
 }]);
+
