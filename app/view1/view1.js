@@ -16,5 +16,4 @@ angular.module('myApp.view1', ['ngRoute'])
 		//lexical this (comes with the arrow, ES6 function)
 		this.modules = data;
 	});
-
 }]);
