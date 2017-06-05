@@ -34,21 +34,23 @@ mainApp.factory('Mapper', [function() {
 	}
 
 	function isCore(module){
-		var contains = moduleList.contains(module); //check if is core
-		if (contains){
-			return contains; //return true
+		for(i = 0; i < moduleList.length; i++){ //check if it is a core
+			if(moduleList[i] == module){
+				return true;
+			}
 		}
+		return false;
 	}
 
 	function inCore(module){
 		var notAdded = inMapper(module);
-		var inCore = isCore(module);
+		var core = isCore(module);
 		var added = false;
-		if (notAdded && inCore){
+		if (notAdded && core){
 			added = false;
 		}
 	}
-	return !added;
+	return !added; //if true means need to be added
   }
   
   Mapper.remove = (index) => {
