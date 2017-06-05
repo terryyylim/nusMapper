@@ -1,10 +1,24 @@
 var mainApp = angular.module('myApp');
 
+//start of temporary array
+var moduleList = [];
+
+var mod1 = "{\"moduleCode\":\"ACC1002\",\"moduleTitle\":\"Financial Accounting\"}";
+var mod2 = "{\"moduleCode\":\"ACC1002X\",\"moduleTitle\":\"Financial Accounting\"}";
+var mod3 = "{\"moduleCode\":\"ACC1006\",\"moduleTitle\":\"Accounting Information Systems\"}";
+var mod4 = "{\"moduleCode\":\"ACC2002\",\"moduleTitle\":\"Managerial Accounting\"}";
+
+moduleList.push(mod1);
+moduleList.push(mod2);
+moduleList.push(mod3);
+moduleList.push(mod4);
+//end of temporary array
+
 mainApp.factory('Mapper', [function() {
   var Mapper = {modules : [], core : [], csBD : [], gem : [], ue : []}; //Mapper is an object with an attribute modules which is an empty array
   var mods = Mapper.modules; //mods is an array of modules, to count total MCs
   var core = Mapper.core; //core tracks core mods taken
-  var core = Mapper.csBD; //BD tracks BD mods taken
+  var csBD = Mapper.csBD; //BD tracks BD mods taken
   var gem = Mapper.gem; //gem tracks gem mods taken
   var ue = Mapper.ue; //ue tracks ue mods taken
 
@@ -12,7 +26,7 @@ mainApp.factory('Mapper', [function() {
   	var valid = addCheck(module);
   	if(valid){
     	mods.push(module);
-    	if (inCore(module)){
+    	if (isCore(module) && !inCore(module)){
     		core.push(module);
     	}
 	} else{
@@ -20,7 +34,10 @@ mainApp.factory('Mapper', [function() {
 	}
 
 	function addCheck(module){	// applies binary or to all filters
-		return inMapper(module) && inCore(module);
+		console.log(inCore(module));
+		console.log(inMapper(module));
+		console.log(isCore(module));
+		return inMapper(module);
 	}
 
 	function inMapper(module){  // true is valid, false is invalid
@@ -43,18 +60,18 @@ mainApp.factory('Mapper', [function() {
 	}
 
 	function inCore(module){
-		var notAdded = inMapper(module);
-		var core = isCore(module);
-		var added = false;
-		if (notAdded && core){
-			added = false;
+		for(i = 0; i < core.length; i++){ //check if it has been added to core array yet
+			if(core[i] == module){
+				return true;
+			}
 		}
+		return false;
 	}
-	return !added; //if true means need to be added
   }
   
   Mapper.remove = (index) => {
     mods.splice(index,1);
+    core.splice(index,1);
   }
 
 return Mapper;
