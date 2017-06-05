@@ -8,16 +8,26 @@
 	<div ng-controller="View1Ctrl">
 	<h1>Module Mapping Begins!</h1>
 	<!--onkeyup, is the calling of function after user releases his finger on keyboard-->
-	<input type="text" ng-model="search" name="modules" data-toggle="dropdown" class="navbar-form" id="myInput" placeholder="Type your module code here">
 
-	<!--<div ng-show="vm.modules && search">-->
+	<input type="text" ng-model="vm.search" name="modules" class="navbar-form" id="myInput" placeholder="Type your module code here"/>
+
+	<div ng-show="vm.modules && vm.search">
 	<form>
-		<select id="myselect">
-		<option ng-repeat="module in vm.modules | filter:search | limitTo: 10" value="{{module.moduleCode}}">
-			<td>{{module.moduleCode}}</td>
-			<td>{{module.moduleTitle}}</td>
+		<select ng-model="vm.selected">
+		<option ng-repeat="module in vm.modules | filter: vm.search | limitTo: 10" value="{{module}}">
+
+			<li><td>{{module.moduleCode}}</td>
+			<td>{{module.moduleTitle}}</td></li>
+
 		</option>
 		</select>
 	</form>
-	<!--</div>-->
 	</div>
+	<button ng-click="vm.addModule(vm.selected)"> click here! </button>
+	{{vm.Mapper}}
+	<div ng-repeat="module in vm.Mapper.modules track by $index">
+		{{module.moduleCode}} {{module.moduleTitle}}
+		<button ng-click="vm.removeModule($index)"> remove </button>
+	</div>
+	</div>
+
