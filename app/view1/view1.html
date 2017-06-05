@@ -4,27 +4,17 @@
 
 	<div ng-controller="View1Ctrl">
 	Module Mapping Begins!
-	<datalist id="modules"></datalist>
 	<!--onkeyup, is the calling of function after user releases his finger on keyboard-->
-	<input type="text" ng-model="search" list="getModules()" name="modules" class="navbar-form" id="myInput" placeholder="Type your module code here"/>
+	<input type="text" ng-model="search" list="getModules()" name="modules" class="navbar-form" id="myInput" placeholder="Type your module code here">
 
-	<div ng-show="vm.modules && search">
+	<!--<div ng-show="vm.modules && search">-->
+	<form>
 		<select>
-		<option ng-repeat="module in vm.modules | filter:search | limitTo: 10" value="{{module.moduleCode}}">
-			<li><td>{{module.moduleTitle}}</td>
-			<td>{{module.moduleCode}}</td></li>
+		<option ng-repeat="module in vm.modules | filter:search | limitTo: 10" value="{{module.moduleCode}}" ng-model="search">
+			<li><td>{{module.moduleCode}}</td>
+			<td>{{module.moduleTitle}}</td></li>
 		</option>
 		</select>
+	</form>
+	<!--</div>-->
 	</div>
-	</div>
-	
-	<script>
-		$(document).ready(function() {
-			$("input").on("mouseover",function() {
-				var a = $(this).attr("name");
-				populate(a);
-			});
-		});
-
-	</script>
-

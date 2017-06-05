@@ -10,19 +10,6 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
-//Why does this function not work at all when I place it here
-//function populate(sourceString) {
-//	var availableTags = document.getElementById(sourceString);
-//	var sourceObject = eval(sourceString);
-//	var obj = new sourceObject();
-//	var options = '';
-//
-//	for(var i = 0; i < obj.list.length; i++) {
-//		options += '<option value = "'+obj.list[i] + '" />'; 
-//	}
-//	availableTags.innerHTML = options;
-//}
-
 .controller('View1Ctrl', ["$http", "$q", "$scope", function($http,$q, $scope) {
 	getModules().then((data) => {
 		console.log(data);
@@ -42,3 +29,4 @@ angular.module('myApp.view1', ['ngRoute'])
 	}
 	
 }]);
+
