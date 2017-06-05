@@ -6,11 +6,11 @@
 	Module Mapping Begins!
 	<datalist id="modules"></datalist>
 	<!--onkeyup, is the calling of function after user releases his finger on keyboard-->
-	<input type="text" ng-model="search" list="getModules()" name="modules" class="navbar-form" id="myInput" placeholder="Type your module code here"/>
+	<input type="text" ng-model="vm.search" name="modules" class="navbar-form" id="myInput" placeholder="Type your module code here"/>
 
-	<div ng-show="vm.modules && search">
-		<select>
-		<option ng-repeat="module in vm.modules | filter:search | limitTo: 10" value="{{module.moduleCode}}">
+	<div ng-show="vm.modules && vm.search">
+		<select ng-model="vm.selected">
+		<option ng-repeat="module in vm.modules | filter: vm.search | limitTo: 10" value="{{module}}">
 
 		
 			<li><td>{{module.moduleCode}}</td>
@@ -18,15 +18,12 @@
 		</option>
 		</select>
 	</div>
+	<button ng-click="vm.addModule(vm.selected)"> click here! </button>
+	{{vm.Mapper}}
+	<div ng-repeat="module in vm.Mapper.modules track by $index">
+		{{module.moduleCode}} {{module.moduleTitle}}
+		<button ng-click="vm.removeModule($index)"> remove </button>
+	</div>
 	</div>
 	
-	<script>
-		$(document).ready(function() {
-			$("input").on("mouseover",function() {
-				var a = $(this).attr("name");
-				populate(a);
-			});
-		});
-
-	</script>
 

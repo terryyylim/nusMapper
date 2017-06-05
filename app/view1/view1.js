@@ -23,10 +23,21 @@ angular.module('myApp.view1', ['ngRoute'])
 //	availableTags.innerHTML = options;
 //}
 
-.controller('View1Ctrl', ["$http", "$q", "$scope", "Module", function($http,$q, $scope, Module) {
+.controller('View1Ctrl', ["$http", "$q", "$scope", "Module", "Mapper", function($http,$q, $scope, Module, Mapper) {
+	this.Mapper = Mapper;
+
 	Module.getMods().then((data) => {
 		console.log(data);
 		//lexical this (comes with the arrow, ES6 function)
 		this.modules = data;
 	});
+
+	this.addModule = (module) => {
+		Mapper.add(module);
+	}
+
+	this.removeModule = (index) => {
+		Mapper.remove(index);
+	}
+
 }]);
