@@ -1,20 +1,27 @@
-
 	<link rel="stylesheet" type="text/css" href="view1/view1.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
 	<div ng-controller="View1Ctrl">
-	Module Mapping Begins!
+	<h1>Module Mapping Begins!</h1>
 	<!--onkeyup, is the calling of function after user releases his finger on keyboard-->
+
 	<input type="text" ng-model="vm.search" name="modules" class="navbar-form" id="myInput" placeholder="Type your module code here"/>
 
 	<div ng-show="vm.modules && vm.search">
+	<form>
 		<select ng-model="vm.selected">
 		<option ng-repeat="module in vm.modules | filter: vm.search | limitTo: 10" value="{{module}}">
 
 			<li><td>{{module.moduleCode}}</td>
 			<td>{{module.moduleTitle}}</td></li>
+
 		</option>
 		</select>
+	</form>
 	</div>
 	<button ng-click="vm.addModule(vm.selected)"> click here! </button>
 	{{vm.Mapper}}
