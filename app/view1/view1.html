@@ -24,10 +24,36 @@
 	</form>
 	</div>
 	<button ng-click="vm.addModule(vm.selected)"> Click to add module! </button>
+	{{vm.selected}}
 	{{vm.Mapper}}
-	<div ng-repeat="module in vm.Mapper.modules track by $index">
-		{{module.moduleCode}} {{module.moduleTitle}}
+	<div id="div1">
+	<h1><center>Core Modules</center></h1>
+	<table class="table table-hover" id="dev-table">
+		<thead>
+			<tr>
+				<th>Module Code</th>
+				<th>Module Title</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr data-ng-repeat="module in vm.Mapper.modules track by $index">
+				<td>{{module.moduleCode}}</td>
+				<td>{{module.moduleTitle}}</td>
+			</tr>
+		</tbody>
 		<button ng-click="vm.removeModule($index)"> Click to remove module! </button>
+	</table>
 	</div>
+
+	<div id="div2">
+	<table class="table table-hover" id="dev-table">
+		<thead>
+			<tr>
+				<th>Module Code</th>
+				<th>Module Title</th>
+			</tr>
+		</thead>
+	</table>
 	</div>
 

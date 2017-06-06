@@ -3,10 +3,10 @@ var mainApp = angular.module('myApp');
 //start of temporary array
 var moduleList = [];
 
-var mod1 = "{\"moduleCode\":\"ACC1002\",\"moduleTitle\":\"Financial Accounting\"}";
-var mod2 = "{\"moduleCode\":\"ACC1002X\",\"moduleTitle\":\"Financial Accounting\"}";
-var mod3 = "{\"moduleCode\":\"ACC1006\",\"moduleTitle\":\"Accounting Information Systems\"}";
-var mod4 = "{\"moduleCode\":\"ACC2002\",\"moduleTitle\":\"Managerial Accounting\"}";
+var mod1 = {"moduleCode":"ACC1002","moduleTitle":"Financial Accounting","moduleCredit": "4"};
+var mod2 = {"moduleCode":"ACC1002X","moduleTitle":"Financial Accounting","moduleCredit": "4"};
+var mod3 = {"moduleCode":"ACC1006","moduleTitle":"Accounting Information Systems","moduleCredit": "4"};
+var mod4 = {"moduleCode":"ACC2002","moduleTitle":"Managerial Accounting","moduleCredit": "4"};
 
 moduleList.push(mod1);
 moduleList.push(mod2);
@@ -15,23 +15,44 @@ moduleList.push(mod4);
 //end of temporary array
 
 mainApp.factory('Mapper', [function() {
-  var Mapper = {modules : [], core : [], csBD : [], gem : [], ue : []}; //Mapper is an object with an attribute modules which is an empty array
+  var Mapper = {
+  modules : [], 
+  core : [], 
+  csBD : [], 
+  gem : [], 
+  ue : [],
+  totalMC : 0,
+  coreMC : 0,
+  csBDMC : 0,
+  gemMC : 0,
+  ueMC : 0,
+  }; 
+  //Mapper is an object with an attribute modules which is an empty array
   var mods = Mapper.modules; //mods is an array of modules, to count total MCs
   var core = Mapper.core; //core tracks core mods taken
   var csBD = Mapper.csBD; //BD tracks BD mods taken
   var gem = Mapper.gem; //gem tracks gem mods taken
   var ue = Mapper.ue; //ue tracks ue mods taken
+  var m = Mapper;
 
   Mapper.add = (module) => {//add is a method of object Mapper
+  	module = JSON.parse(module);
   	var valid = addCheck(module);
+  	var addedmc = parseInt(module.moduleCredit);
   	if(valid){
     	mods.push(module);
-    	if (isCore(module) && !inCore(module)){
+    	m.totalMC += addedmc;
+    	if (isCore(module) && !inCore(module)){ //&& clearedPrereq(module)
     		core.push(module);
-    	} else if(isGem(module) && !inGem(module)){
+    		m.coreMC += addedmc;
+    	} else if(isGem(module) && !inGem(module) && m.gemMC < 20 && !samePillar(module)){
     		gem.push(module);
+    		m.gemMC += addedmc;
     	} else if(isGem(module) && !inGem(module) && samePillar(module)){
     		ue.push(module);
+    		m.ueMC += addedmc;
+    	} else{
+    		console.log("fku");
     	}
 	} else{
 		console.log("omginvalid");
@@ -47,7 +68,7 @@ mainApp.factory('Mapper', [function() {
 	function inMapper(module){  // true is valid, false is invalid
 		var added = false;
   		for(i = 0; i < mods.length; i++){
-	  		if(mods[i] == module){
+	  		if(angular.equals(mods[i],module)){
 	  			added = true;
 	  		}
   		}	
@@ -57,7 +78,7 @@ mainApp.factory('Mapper', [function() {
 //START OF CORE MODULES CONDITIONS
 	function isCore(module){
 		for(i = 0; i < moduleList.length; i++){ //check if it is a core
-			if(moduleList[i] == module){
+			if(angular.equals(moduleList[i],module)){
 				return true;
 			}
 		}
@@ -66,7 +87,7 @@ mainApp.factory('Mapper', [function() {
 
 	function inCore(module){
 		for(i = 0; i < core.length; i++){ //check if it has been added to core array yet
-			if(core[i] == module){
+			if(angular.equals(core[i],module)){
 				return true;
 			}
 		}
@@ -77,7 +98,7 @@ mainApp.factory('Mapper', [function() {
 //START OF GEM MODULES CONDITIONS
 	function isGem(module){ //check if it is a GEM module
 		var str = module.moduleCode;
-		if(str.slice(0,3) == "GEH" || str.slice(0,3) == "GES" || str.slice(0,3) == "GET" || str.slice(0,3) == "GER" || str.slice(0,2) == "GEQ"){
+		if((str.slice(0,3) == "GEH") || (str.slice(0,3) == "GES") || (str.slice(0,3) == "GET") || str.slice(0,3) == "GER" || str.slice(0,2) == "GEQ"){
 			return true;
 		}
 		return false;
@@ -85,7 +106,7 @@ mainApp.factory('Mapper', [function() {
 
 	function inGem(module){ //check if already added into GEM module list
 		for(i = 0; i < gem.length; i++){
-			if(gem[i] == module){
+			if(angular.equals(gem[i],module)){
 				return true;
 			}
 		}
@@ -95,7 +116,7 @@ mainApp.factory('Mapper', [function() {
 	function samePillar(module){ //check if same pillar GEM already taken
 		var str = module.moduleCode;
 		for(i = 0; i < gem.length; i++){
-			if(str.slice(0,3) == gem[i].slice(0,3)){
+			if(str.slice(0,3) == gem[i].moduleCode.slice(0,3)){
 				return true;
 			}
 		}
@@ -103,18 +124,67 @@ mainApp.factory('Mapper', [function() {
 	}
 
 	function maxGem(module){ //check if already 5 modules worth of GEMs
-		if(gemCount == 20){
+		if(m.gemMC == 20){
 			return true;
 		}
 		return false;
 	}
 //END OF GEM MODULES CONDITIONS
+
+//START OF PRE-REQUISITE CONDITIONS
+	function clearedPrereq(module){
+		var prereq = module.prerequisite; //in prerequisite list
+		for(i = 0; i < prereq.length; i++){ //how to retrieve array of prerequisites
+			for(j = 0; j < mods.length; j++){
+				if(angular.equals(prereq[i],mods[j])){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	function isPreclu(module){ //check if module has been taken before
+		for(i = 0; i < mods.length; i++){
+			if(mods[i].preclusion.length > 1){ //how to retrieve array of preclusions
+				var preclu = mods[i].preclusion.length;
+				for(j = 0; j < preclu; j++){
+					if(angular.equals(preclu[j],module)){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+//END OF PRE-REQUISITE CONDITIONS
   }
   
+//REMOVE FUNCTIONS
   Mapper.remove = (index) => {
-    mods.splice(index,1);
-    core.splice(index,1);
+    var removed = mods.splice(index,1)[0];
+    var removedmc = parseInt(removed.moduleCredit);
+    for(i = 0; i < core.length; i++){
+    	if(angular.equals(core[i], removed)){
+    		core.splice(i,1);
+    		m.coreMC = m.coreMC - removedmc;
+    	}
+    }for(i = 0; i < ue.length; i++){
+    	if(angular.equals(ue[i], removed)){
+    		ue.splice(i,1);
+    		m.ueMC = m.ueMC - removedmc;
+    	}
+    	
+    }for(i = 0; i < gem.length; i++){
+    	if(angular.equals(gem[i], removed)){
+    		gem.splice(i,1);
+    		m.gemMC = m.gemMC - removedmc;
+    	}	
+    }
+    m.totalMC -= removedmc;
   }
+//END OF REMOVE FUNCTIONS
 
 return Mapper;
 }]);

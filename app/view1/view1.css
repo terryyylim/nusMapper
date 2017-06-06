@@ -9,3 +9,21 @@
     border: 1px solid #ddd; /* Add a grey border */
     margin-bottom: 12px; /* Add some space below the input */
 }
+
+.center {
+	text-align: center;
+}
+
+#div1 { 
+	background: #DDD;
+	width: 50%;
+	height: 50%;
+	float: left;
+}
+
+#div2 {
+	background: #AAA;
+	width: 50%;
+	height: 50%;
+	float: right;
+}
