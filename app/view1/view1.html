@@ -23,11 +23,11 @@
 		</select>
 	</form>
 	</div>
-	<button ng-click="vm.addModule(vm.selected)"> click here! </button>
+	<button ng-click="vm.addModule(vm.selected)"> Click to add module! </button>
 	{{vm.Mapper}}
 	<div ng-repeat="module in vm.Mapper.modules track by $index">
 		{{module.moduleCode}} {{module.moduleTitle}}
-		<button ng-click="vm.removeModule($index)"> remove </button>
+		<button ng-click="vm.removeModule($index)"> Click to remove module! </button>
 	</div>
 	</div>
 

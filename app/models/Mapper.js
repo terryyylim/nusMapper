@@ -28,6 +28,10 @@ mainApp.factory('Mapper', [function() {
     	mods.push(module);
     	if (isCore(module) && !inCore(module)){
     		core.push(module);
+    	} else if(isGem(module) && !inGem(module)){
+    		gem.push(module);
+    	} else if(isGem(module) && !inGem(module) && samePillar(module)){
+    		ue.push(module);
     	}
 	} else{
 		console.log("omginvalid");
@@ -50,6 +54,7 @@ mainApp.factory('Mapper', [function() {
   	return !added;
 	}
 
+//START OF CORE MODULES CONDITIONS
 	function isCore(module){
 		for(i = 0; i < moduleList.length; i++){ //check if it is a core
 			if(moduleList[i] == module){
@@ -67,6 +72,43 @@ mainApp.factory('Mapper', [function() {
 		}
 		return false;
 	}
+//END OF CORE MODULES CONDITIONS
+
+//START OF GEM MODULES CONDITIONS
+	function isGem(module){ //check if it is a GEM module
+		var str = module.moduleCode;
+		if(str.slice(0,3) == "GEH" || str.slice(0,3) == "GES" || str.slice(0,3) == "GET" || str.slice(0,3) == "GER" || str.slice(0,2) == "GEQ"){
+			return true;
+		}
+		return false;
+	}
+
+	function inGem(module){ //check if already added into GEM module list
+		for(i = 0; i < gem.length; i++){
+			if(gem[i] == module){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function samePillar(module){ //check if same pillar GEM already taken
+		var str = module.moduleCode;
+		for(i = 0; i < gem.length; i++){
+			if(str.slice(0,3) == gem[i].slice(0,3)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function maxGem(module){ //check if already 5 modules worth of GEMs
+		if(gemCount == 20){
+			return true;
+		}
+		return false;
+	}
+//END OF GEM MODULES CONDITIONS
   }
   
   Mapper.remove = (index) => {
@@ -76,4 +118,3 @@ mainApp.factory('Mapper', [function() {
 
 return Mapper;
 }]);
-
