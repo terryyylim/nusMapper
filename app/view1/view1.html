@@ -2,8 +2,13 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 	<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet"/>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
+	<div id="totalMC">
+		{{vm.Mapper.totalMC}}
+	</div>
 
 	<div ng-controller="View1Ctrl">
 	<h1>Module Mapping Begins!</h1>
@@ -23,14 +28,15 @@
 		</select>
 	</form>
 	</div>
-	<button ng-click="vm.addModule(vm.selected)"> Click to add module! </button>
+
+	<a href="#" class="push_button blue" ng-click="vm.addModule(vm.selected)"> Click to add module! </a>
 	{{vm.selected}}
 	{{vm.Mapper}}
 	<div id="div1">
 	<h1><center>Core Modules</center></h1>
-	<table class="table table-hover" id="dev-table">
+	<table class="table table-hover">
 		<thead>
-			<tr>
+			<tr class="bg-danger">
 				<th>Module Code</th>
 				<th>Module Title</th>
 			</tr>
@@ -40,20 +46,47 @@
 			<tr data-ng-repeat="module in vm.Mapper.modules track by $index">
 				<td>{{module.moduleCode}}</td>
 				<td>{{module.moduleTitle}}</td>
+				<a href="#" class="push_button red" ng-click="vm.removeModule($index)"> Click to remove module! </a>
 			</tr>
 		</tbody>
-		<button ng-click="vm.removeModule($index)"> Click to remove module! </button>
+		<!--<button ng-click="vm.removeModule($index, 'core')"> Click to remove module! </button>-->
 	</table>
 	</div>
 
 	<div id="div2">
+	<h1><center>GEM Modules</center></h1>
 	<table class="table table-hover" id="dev-table">
 		<thead>
-			<tr>
+			<tr class="bg-danger">
 				<th>Module Code</th>
 				<th>Module Title</th>
 			</tr>
 		</thead>
+
+		<tbody>
+		<tr data-ng-repeat="module in vm.Mapper.gem">
+			<td>{{module.moduleCode}}</td>
+			<td>{{module.moduleTitle}}</td>
+		</tr>
+		</tbody>
 	</table>
 	</div>
 
+	<div id="div3">
+	<h1><center>UE Modules</center></h1>
+	<table class="table table-hover" id="dev-table">
+		<thead>
+			<tr class="bg-danger">
+				<th>Module Code</th>
+				<th>Module Title</th>
+			</tr>
+		</thead>
+
+		<tbody>
+		<tr data-ng-repeat="module in vm.Mapper.ue">
+			<td>{{module.moduleCode}}</td>
+			<td>{{module.moduleTitle}}</td>
+		</tr>
+		</tbody>
+	</table>
+	</div>

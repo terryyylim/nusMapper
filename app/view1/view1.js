@@ -20,6 +20,14 @@ angular.module('myApp.view1', ['ngRoute'])
 		this.modules = data;
 	});
 
+	Module.getPrereq().then((data) => {
+		console.log(data);
+		//lexical this (comes with the arrow, ES6 function)
+		this.prereq = data;
+		//console.log(this.prereq);
+	});
+
+	
 
 	this.addModule = (module) => {
 		Mapper.add(module);

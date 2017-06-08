@@ -26,6 +26,7 @@ mainApp.factory('Mapper', [function() {
   csBDMC : 0,
   gemMC : 0,
   ueMC : 0,
+  message : "",
   }; 
   //Mapper is an object with an attribute modules which is an empty array
   var mods = Mapper.modules; //mods is an array of modules, to count total MCs
@@ -48,10 +49,9 @@ mainApp.factory('Mapper', [function() {
     	} else if(isGem(module) && !inGem(module) && m.gemMC < 20 && !samePillar(module)){
     		gem.push(module);
     		m.gemMC += addedmc;
-    	} else if(isGem(module) && !inGem(module) && samePillar(module)){
+    	} else{
     		ue.push(module);
     		m.ueMC += addedmc;
-    	} else{
     		console.log("fku");
     	}
 	} else{
