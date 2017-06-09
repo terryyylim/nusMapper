@@ -15,13 +15,13 @@ angular.module('myApp.view1', ['ngRoute'])
 
 
 	Module.getMods().then((data) => {
-		console.log(data);
+		//console.log(data);
 		//lexical this (comes with the arrow, ES6 function)
 		this.modules = data;
 	});
 
 	Module.getPrereq().then((data) => {
-		console.log(data);
+		//console.log(data);
 		//lexical this (comes with the arrow, ES6 function)
 		this.prereq = data;
 		//console.log(this.prereq);

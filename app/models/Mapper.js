@@ -14,7 +14,11 @@ moduleList.push(mod3);
 moduleList.push(mod4);
 //end of temporary array
 
-mainApp.factory('Mapper', [function() {
+mainApp.factory('Mapper', ['Module', function(Module) {
+
+	
+
+
   var Mapper = {
   modules : [], 
   core : [], 
@@ -28,6 +32,13 @@ mainApp.factory('Mapper', [function() {
   ueMC : 0,
   message : "",
   }; 
+// init Prereq
+
+	Module.getPrereq().then((data) => {
+		//lexical this (comes with the arrow, ES6 function)
+		Mapper.prereq = data;
+	});
+
   //Mapper is an object with an attribute modules which is an empty array
   var mods = Mapper.modules; //mods is an array of modules, to count total MCs
   var core = Mapper.core; //core tracks core mods taken
