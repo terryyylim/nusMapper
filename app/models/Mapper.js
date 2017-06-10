@@ -16,9 +16,6 @@ moduleList.push(mod4);
 
 mainApp.factory('Mapper', ['Module', function(Module) {
 
-	
-
-
   var Mapper = {
   modules : [], 
   core : [], 
@@ -47,16 +44,21 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   var ue = Mapper.ue; //ue tracks ue mods taken
   var m = Mapper;
 
-  Mapper.add = (module) => {//add is a method of object Mapper
-  	module = JSON.parse(module);
+  Mapper.add = (module, index) => {//add is a method of object Mapper
+  	
+  	console.log(clearedPreclusion(module,index));
+
   	var valid = addCheck(module);
   	var addedmc = parseInt(module.moduleCredit);
   	if(valid){
     	mods.push(module);
     	m.totalMC += addedmc;
-    	if (isCore(module) && !inCore(module)){ //&& clearedPrereq(module)
+    	if (isCore(module) && !inCore(module)){ //&& !clearedPreclusion(module)
     		core.push(module);
     		m.coreMC += addedmc;
+    	} else if(!isCore(module) && !isGem(module)){
+    		ue.push(module);
+    		m.ueMC += addedmc;
     	} else if(isGem(module) && !inGem(module) && m.gemMC < 20 && !samePillar(module)){
     		gem.push(module);
     		m.gemMC += addedmc;
@@ -73,6 +75,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		console.log(inCore(module));
 		console.log(inMapper(module));
 		console.log(isCore(module));
+		//console.log(Mapper.prereq[0].preclusion);
 		return inMapper(module);
 	}
 
@@ -143,8 +146,21 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 //END OF GEM MODULES CONDITIONS
 
 //START OF PRE-REQUISITE CONDITIONS
-	function clearedPrereq(module){
-		var prereq = module.prerequisite; //in prerequisite list
+	function clearedPreclusion(module, index){
+		if (!('preclusion' in Mapper.prereq[index])){
+			return true; //true means no preclusion, can take the mod
+		} else if ('preclusion' in Mapper.prereq[index]) {
+			for (i = 0; i < mods.length; i++){
+				for (j = 0; j < Mapper.prereq[index].preclusion; j++){
+					if (mods[i] == Mapper.prereq[index].preclusion[j]){
+						return false; //false means already cleared preclusion and cannot take this mod
+					}
+				}
+			}
+			return true;
+		}
+		/*var prereq = Mapper.prereq[index].preclusion; //in prerequisite list
+		console.log(prereq);
 		for(i = 0; i < prereq.length; i++){ //how to retrieve array of prerequisites
 			for(j = 0; j < mods.length; j++){
 				if(angular.equals(prereq[i],mods[j])){
@@ -152,21 +168,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 				}
 			}
 		}
-		return false;
-	}
-
-	function isPreclu(module){ //check if module has been taken before
-		for(i = 0; i < mods.length; i++){
-			if(mods[i].preclusion.length > 1){ //how to retrieve array of preclusions
-				var preclu = mods[i].preclusion.length;
-				for(j = 0; j < preclu; j++){
-					if(angular.equals(preclu[j],module)){
-						return true;
-					}
-				}
-			}
-		}
-		return false;
+		return false;*/
 	}
 	/*
 	Expected input: prerequisite param of module, either a string or a json object
