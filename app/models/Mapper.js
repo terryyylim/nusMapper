@@ -168,6 +168,29 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		}
 		return false;
 	}
+	/*
+	Expected input: prerequisite param of module, either a string or a json object
+	output: true if module can be added, false if otherwise
+	*/
+	function eval_hasPrereq(prereq){
+		if(angular.isString(prereq)){
+			return mods.contains(prereq);  // THIS IS PSEUDOCODE PLEASE A FUNCTION TO CHECK IF PREREQ IS IN MAPPER
+		} else if(prereq.or){	//PREREQ IS JSON OBJECT. TYPECHECK TO MAKE SURE IT IS NOT A STRING. IF IT IS STRING. JSONIFY IT
+			if(prereq.or.length >1){
+				return eval_hasPrereq(prereq.or[0]) || eval_hasPrereq({"or" : prereq.or.splice(0,1)});
+			} else{
+				return mods.contains(prereq.or[0]);
+			}
+		} else if(prereq.and){
+			if(prereq.and.length >1){
+				return eval_hasPrereq(prereq.and[0]) || eval_hasPrereq({"and" : prereq.and.splice(0,1)});
+			} else{
+				return mods.contains(prereq.and[0]);
+			}
+		} else{
+			alert("error in input");
+		}
+	}
 
 //END OF PRE-REQUISITE CONDITIONS
   }
