@@ -19,9 +19,9 @@
 	<div ng-show="vm.modules && vm.search">
 	<form>
 		<select ng-model="vm.selected">
-		<option ng-repeat="module in vm.modules | filter: vm.search | limitTo: 10" value="{{module}}">
+		<option ng-repeat="module in vm.modules | filter: vm.search | limitTo: 10 track by $index" value="{{module}}">
 
-			<li><td>{{module.moduleCode}}</td>
+			<li><td>{{module.moduleCode}} {{$index}}</td>
 			<td>{{module.moduleTitle}}</td></li>
 
 		</option>
@@ -32,7 +32,7 @@
 	<a href="#" class="push_button blue" ng-click="vm.addModule(vm.selected)"> Click to add module! </a>
 	{{vm.selected}}
 	<div id="div1">
-	<h1><center>Core Modules</center></h1>
+	<h1><center>All Modules</center></h1>
 	<table class="table table-hover">
 		<thead>
 			<tr class="bg-danger">
@@ -83,6 +83,25 @@
 
 		<tbody>
 		<tr data-ng-repeat="module in vm.Mapper.ue">
+			<td>{{module.moduleCode}}</td>
+			<td>{{module.moduleTitle}}</td>
+		</tr>
+		</tbody>
+	</table>
+	</div>
+
+	<div id="div4">
+	<h1><center>CORE Modules</center></h1>
+	<table class="table table-hover" id="dev-table">
+		<thead>
+			<tr class="bg-danger">
+				<th>Module Code</th>
+				<th>Module Title</th>
+			</tr>
+		</thead>
+
+		<tbody>
+		<tr data-ng-repeat="module in vm.Mapper.core">
 			<td>{{module.moduleCode}}</td>
 			<td>{{module.moduleTitle}}</td>
 		</tr>
