@@ -7,11 +7,13 @@ var mod1 = {"moduleCode":"ACC1002","moduleTitle":"Financial Accounting","moduleC
 var mod2 = {"moduleCode":"ACC1002X","moduleTitle":"Financial Accounting","moduleCredit": "4"};
 var mod3 = {"moduleCode":"ACC1006","moduleTitle":"Accounting Information Systems","moduleCredit": "4"};
 var mod4 = {"moduleCode":"ACC2002","moduleTitle":"Managerial Accounting","moduleCredit": "4"};
+var mod5 = {"moduleCode":"ZB4171","moduleTitle":"Advanced Topics in Bioinformatics","moduleCredit": "4"}
 
 moduleList.push(mod1);
 moduleList.push(mod2);
 moduleList.push(mod3);
 moduleList.push(mod4);
+moduleList.push(mod5);
 //end of temporary array
 
 mainApp.factory('Mapper', ['Module', function(Module) {
@@ -22,6 +24,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   csBD : [], 
   gem : [], 
   ue : [],
+  preclusions: [],
   totalMC : 0,
   coreMC : 0,
   csBDMC : 0,
@@ -42,18 +45,21 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   var csBD = Mapper.csBD; //BD tracks BD mods taken
   var gem = Mapper.gem; //gem tracks gem mods taken
   var ue = Mapper.ue; //ue tracks ue mods taken
+  var preclu = Mapper.preclusions;
   var m = Mapper;
 
   Mapper.add = (module, index) => {//add is a method of object Mapper
-  	
-  	console.log(clearedPreclusion(module,index));
 
   	var valid = addCheck(module);
+  	var clearedPrerequisite = eval_hasPrereq(module,index);
+  	var clearedPreclusion = eval_hasPreclu(module,index);
   	var addedmc = parseInt(module.moduleCredit);
-  	if(valid){
+
+  	if(valid && clearedPrerequisite && !clearedPreclusion){
     	mods.push(module);
     	m.totalMC += addedmc;
-    	if (isCore(module) && !inCore(module)){ //&& !clearedPreclusion(module)
+    	console.log(preclu);
+    	if (isCore(module) && !inCore(module)){
     		core.push(module);
     		m.coreMC += addedmc;
     	} else if(!isCore(module) && !isGem(module)){
@@ -75,7 +81,9 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		console.log(inCore(module));
 		console.log(inMapper(module));
 		console.log(isCore(module));
-		//console.log(Mapper.prereq[0].preclusion);
+		console.log(eval_hasPreclu(module,index));
+		//console.log(eval_hasPrereq(module, index));
+		//console.log(inMapper(Mapper.prereq)); //LSM2241 for testing
 		return inMapper(module);
 	}
 
@@ -145,52 +153,88 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 	}
 //END OF GEM MODULES CONDITIONS
 
-//START OF PRE-REQUISITE CONDITIONS
-	function clearedPreclusion(module, index){
-		if (!('preclusion' in Mapper.prereq[index])){
-			return true; //true means no preclusion, can take the mod
-		} else if ('preclusion' in Mapper.prereq[index]) {
-			for (i = 0; i < mods.length; i++){
-				for (j = 0; j < Mapper.prereq[index].preclusion; j++){
-					if (mods[i] == Mapper.prereq[index].preclusion[j]){
-						return false; //false means already cleared preclusion and cannot take this mod
-					}
-				}
+//START OF PRECLUSION CONDITIONS
+	function eval_hasPreclu(module, index){
+		var checker = false;
+		//console.log(Mapper.prereq[index].preclusion);
+		if(angular.isString(module)){ //Base Case 1: 1 Preclu left
+			return contains(module); //if true, means cannot take this module anymore
+		} else if(angular.isString(Mapper.prereq[index].preclusion)){ //Base Case 2: Only 1 Preclu to begin with
+			return contains(Mapper.prereq[index].preclusion);
+		} else if(typeof Mapper.prereq[index].preclusion === "undefined"){ //Base Case 3: No Preclu
+			console.log("No Preclusions");
+			return false; //No Preclusions, so able to just take the module
+		} else if(Mapper.prereq[index].preclusion.or) {
+			if(Mapper.prereq[index].preclusion.or.length > 1){
+				console.log("Got here!-preclu_1");
+				return eval_hasPreclu(Mapper.prereq[index].preclusion.or[0],index) || eval_hasPreclu({"or" : Mapper.prereq[index].preclusion.or.splice(0,1)},index);
+			} else {
+				return contains(Mapper.prereq[index].preclusion.or[0]);
 			}
-			return true;
-		}
-		/*var prereq = Mapper.prereq[index].preclusion; //in prerequisite list
-		console.log(prereq);
-		for(i = 0; i < prereq.length; i++){ //how to retrieve array of prerequisites
-			for(j = 0; j < mods.length; j++){
-				if(angular.equals(prereq[i],mods[j])){
-					return true;
-				}
+		} else if(Mapper.prereq[index].preclusion.and){
+			for(i = 0; i < Mapper.prereq[index].preclusion.and.length; i++){
+				for(j = 0; j < mods.length; j++){
+					if(angular.equals(Mapper.prereq[index].preclusion.and[i],mods[j].moduleCode)){
+					checker = false;
+				} else {
+					checker = true; 
+					break; //once a module is not in the 'mods' array, means can take
+				}	
 			}
 		}
-		return false;*/
+			return checker; //if false, means can take module as not all modules are in 'mods' array
+		} else {
+			alert("error in input! -preclu")
+		}
 	}
+
+//END OF PRECLUSION CONDITIONS
+
+//START OF PRE-REQUISITE CONDITIONS
+	function contains(module){
+		var added = false;
+		for (i = 0; i < mods.length; i++){
+			if(angular.equals(module,mods[i].moduleCode)){
+				added = true;
+			}
+		}
+		return added;
+	}
+
 	/*
 	Expected input: prerequisite param of module, either a string or a json object
 	output: true if module can be added, false if otherwise
 	*/
-	function eval_hasPrereq(prereq){
-		if(angular.isString(prereq)){
-			return mods.contains(prereq);  // THIS IS PSEUDOCODE PLEASE A FUNCTION TO CHECK IF PREREQ IS IN MAPPER
-		} else if(prereq.or){	//PREREQ IS JSON OBJECT. TYPECHECK TO MAKE SURE IT IS NOT A STRING. IF IT IS STRING. JSONIFY IT
-			if(prereq.or.length >1){
-				return eval_hasPrereq(prereq.or[0]) || eval_hasPrereq({"or" : prereq.or.splice(0,1)});
-			} else{
-				return mods.contains(prereq.or[0]);
+	function eval_hasPrereq(module, index){
+
+		if(angular.isString(module)){ //Base Case 1: 1 Prereq left
+			console.log("got here!-prereq_1");
+			console.log(contains(module));
+			return contains(module);
+		} else if(angular.isString(Mapper.prereq[index].prerequisite)){ //Base Case 2: Only 1 Prereq to begin with
+			return contains(Mapper.prereq[index].prerequisite);
+		} else if(typeof Mapper.prereq[index].prerequisite === "undefined"){ //Base Case 3: No Prereq
+			console.log("No Pre-requisites");
+			return true;
+		} else if(Mapper.prereq[index].prerequisite.or){ //Module has Prereqs that are type 'or'
+			if(Mapper.prereq[index].prerequisite.or.length >1){ //More than 1 Prereq nested in 'or'
+				console.log("got here!-prereq_2");
+				return eval_hasPrereq(Mapper.prereq[index].prerequisite.or[0],index) || eval_hasPrereq({"or" : Mapper.prereq[index].prerequisite.or.splice(0,1)},index);
+			} else{ //Only 1 prereq in 'or'
+				console.log("got here!-prereq_3");
+				console.log(Mapper.prereq[index].prerequisite.or[0]);
+				return contains(Mapper.prereq[index].prerequisite.or[0]);
 			}
-		} else if(prereq.and){
-			if(prereq.and.length >1){
-				return eval_hasPrereq(prereq.and[0]) || eval_hasPrereq({"and" : prereq.and.splice(0,1)});
-			} else{
-				return mods.contains(prereq.and[0]);
+		} else if(Mapper.prereq[index].and){ //Module has Prereqs that are type 'and'
+			if(Mapper.prereq[index].and.length >1){ //More than 1 Prereq nested in 'and'
+				console.log("got here!-prereq_4");
+				return eval_hasPrereq(Mapper.prereq[index].prerequisite.and[0],index) || eval_hasPrereq({"and" : Mapper.prereq[index].prerequisite.and.splice(0,1)},index);
+			} else{ //Only 1 prereq in 'and'
+				console.log("got here!-prereq_5");
+				return contains(Mapper.prereq[index].prerequisite.and[0]);
 			}
 		} else{
-			alert("error in input");
+			alert("error in input! -prereq");
 		}
 	}
 

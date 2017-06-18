@@ -10,7 +10,7 @@
 		{{vm.Mapper.totalMC}}
 	</div>
 
-	<div ng-controller="View1Ctrl">
+	<div ng-controller="View1Ctrl as vm">
 	<h1>Module Mapping Begins!</h1>
 	<!--onkeyup, is the calling of function after user releases his finger on keyboard-->
 
@@ -29,8 +29,9 @@
 	</form>
 	</div>
 
-	<a href="#" class="push_button blue" ng-click="vm.addModule(vm.selected)"> Click to add module! </a>
 	{{vm.selected}}
+	<a href="#" class="push_button blue" ng-click="vm.addModule(vm.selected)"> Click to add module! </a>
+
 	<div id="div1">
 	<h1><center>All Modules</center></h1>
 	<table class="table table-hover">
