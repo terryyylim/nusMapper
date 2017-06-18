@@ -10,7 +10,8 @@ body {
     font-size: 16px; /* Increase font-size */
     padding: 12px 20px 12px 40px; /* Add some padding */
     border: 1px solid #ddd; /* Add a grey border */
-    margin-bottom: 12px; /* Add some space below the input */
+    margin-left: 10px;
+    margin-bottom: 0px; /* Add some space below the input */
 }
 
 #totalMC {
@@ -124,30 +125,28 @@ body {
 	text-align: center;
 }
 
-#div1 { 
-	background: #8FBC8F;
-	width: 50%;
-	height: 50%;
-	float: left;
+.scrollable {
+	height: 200px;
+	overflow: scroll;
 }
 
-#div2 {
-	background: #AAA;
-	width: 50%;
-	height: 50%;
-	float: right;
+#left {
+	border: 2px solid black;
+	float: left;
+	margin: 5px;
+	width: 32.5%;
 }
 
-#div3 {
-	background: #777;
-	width: 50%;
-	height: 50%;
+#center {
+	border: 2px solid black;
 	float: left;
+	margin: 5px 0;
+	width: 32.5%;
 }
 
-#div4 {
-	background: #888;
-	width: 50%;
-	height: 50%;
+#right {
+	border: 2px solid black;
 	float: left;
+	margin: 5px;
+	width: 32.5%;
 }

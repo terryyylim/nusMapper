@@ -206,6 +206,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 	output: true if module can be added, false if otherwise
 	*/
 	function eval_hasPrereq(module, index){
+		var checker = false;
 
 		if(angular.isString(module)){ //Base Case 1: 1 Prereq left
 			console.log("got here!-prereq_1");
@@ -225,10 +226,24 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 				console.log(Mapper.prereq[index].prerequisite.or[0]);
 				return contains(Mapper.prereq[index].prerequisite.or[0]);
 			}
-		} else if(Mapper.prereq[index].and){ //Module has Prereqs that are type 'and'
-			if(Mapper.prereq[index].and.length >1){ //More than 1 Prereq nested in 'and'
-				console.log("got here!-prereq_4");
-				return eval_hasPrereq(Mapper.prereq[index].prerequisite.and[0],index) || eval_hasPrereq({"and" : Mapper.prereq[index].prerequisite.and.splice(0,1)},index);
+		} else if(Mapper.prereq[index].prerequisite.and){ //Module has Prereqs that are type 'and'
+			if(Mapper.prereq[index].prerequisite.and.length >1){ //More than 1 Prereq nested in 'and'
+				for (i = 0; i < Mapper.prereq[index].prerequisite.and.length; i++){
+					if(Mapper.prereq[index].prerequisite.and[i].or){ //'or' nested within 'and'
+						console.log("got here!-prereq_6");
+						for(j = 0; j < Mapper.prereq[index].prerequisite.and[i].or.length; j++){
+							for(k = 0; k < mods.length; k++){
+								if(angular.equals(Mapper.prereq[index].prerequisite.and[i].or[j],mods[k])){
+									checker = true;
+								}
+							}
+						}
+						return checker;
+					} else {
+						console.log("got here!-prereq_4");
+						return eval_hasPrereq(Mapper.prereq[index].prerequisite.and[0],index) || eval_hasPrereq({"and" : Mapper.prereq[index].prerequisite.and.splice(0,1)},index);
+					}
+				}
 			} else{ //Only 1 prereq in 'and'
 				console.log("got here!-prereq_5");
 				return contains(Mapper.prereq[index].prerequisite.and[0]);
