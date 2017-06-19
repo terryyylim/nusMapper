@@ -8,10 +8,10 @@ var mod2 = {"moduleCode":"CS1020","moduleTitle":"Data Structures and Algorithms 
 var mod3 = {"moduleCode":"CS1231","moduleTitle":"Discrete Structures","moduleCredit":"4"};
 var mod4 = {"moduleCode":"CS2010","moduleTitle":"Data Structures and Algorithms II","moduleCredit":"4"};
 var mod5 = {"moduleCode":"CS2100","moduleTitle":"Computer Organisation","moduleCredit":"4"};
-var mod6 = {"moduleCode":"CS2103T","moduleTitle":"Software Engineering","moduleCredit":"4"}
-var mod7 = {"moduleCode":"CS2105","moduleTitle":"Introduction to Computer Networks","moduleCredit":"4"}
-var mod8 = {"moduleCode":"CS2106","moduleTitle":"Introduction to Operating Systems","moduleCredit":"4"}
-var mod9 = {"moduleCode":"CS3230","moduleTitle":"Design and Analysis of Algorithms","moduleCredit":"4"}
+var mod6 = {"moduleCode":"CS2103T","moduleTitle":"Software Engineering","moduleCredit":"4"};
+var mod7 = {"moduleCode":"CS2105","moduleTitle":"Introduction to Computer Networks","moduleCredit":"4"};
+var mod8 = {"moduleCode":"CS2106","moduleTitle":"Introduction to Operating Systems","moduleCredit":"4"};
+var mod9 = {"moduleCode":"CS3230","moduleTitle":"Design and Analysis of Algorithms","moduleCredit":"4"};
 
 moduleList.push(mod1);
 moduleList.push(mod2);
@@ -56,7 +56,6 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   var csBD = Mapper.csBD; //BD tracks BD mods taken
   var gem = Mapper.gem; //gem tracks gem mods taken
   var ue = Mapper.ue; //ue tracks ue mods taken
-  var preclu = Mapper.preclusions;
   var m = Mapper;
 
   Mapper.add = (module, index) => {//add is a method of object Mapper
@@ -71,7 +70,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   		Mapper.selectedModule = false;
     	mods.push(module);
     	m.totalMC += addedmc;
-    	console.log(preclu);
+
     	if (isCore(module) && !inCore(module)){
     		core.push(module);
     		m.coreMC += addedmc;
@@ -197,7 +196,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 								}
 							}
 						}
-						return checker; //if false, means can take module as not all modules are in 'mods' array
+						return checker || eval_hasPreclu({"and" : Mapper.prereq[index].preclusion.and.splice(0,1)},index); //if false, means can take module as not all modules are in 'mods' array
 					} else {
 						return eval_hasPreclu(Mapper.prereq[index].preclusion.and[0],index) || eval_hasPreclu({"and" : Mapper.prereq[index].preclusion.and.splice(0,1)},index);
 					}
@@ -286,7 +285,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 								}
 							}
 						}
-						return checkerAND;
+						return checkerAND || eval_hasPrereq({"and" : Mapper.prereq[index].prerequisite.and.splice(0,1)},index);
 					} else {
 						console.log("got here!-prereq_4");
 						return eval_hasPrereq(Mapper.prereq[index].prerequisite.and[0],index) || eval_hasPrereq({"and" : Mapper.prereq[index].prerequisite.and.splice(0,1)},index);
