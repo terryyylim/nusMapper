@@ -3,34 +3,45 @@ var mainApp = angular.module('myApp');
 //start of temporary array
 var moduleList = [];
 
-var mod1 = {"moduleCode":"ACC1002","moduleTitle":"Financial Accounting","moduleCredit": "4"};
-var mod2 = {"moduleCode":"ACC1002X","moduleTitle":"Financial Accounting","moduleCredit": "4"};
-var mod3 = {"moduleCode":"ACC1006","moduleTitle":"Accounting Information Systems","moduleCredit": "4"};
-var mod4 = {"moduleCode":"ACC2002","moduleTitle":"Managerial Accounting","moduleCredit": "4"};
-var mod5 = {"moduleCode":"ZB4171","moduleTitle":"Advanced Topics in Bioinformatics","moduleCredit": "4"}
+var mod1 = {"moduleCode":"CS1010","moduleTitle":"Programming Methodology","moduleCredit":"4"};
+var mod2 = {"moduleCode":"CS1020","moduleTitle":"Data Structures and Algorithms I","moduleCredit":"4"};
+var mod3 = {"moduleCode":"CS1231","moduleTitle":"Discrete Structures","moduleCredit":"4"};
+var mod4 = {"moduleCode":"CS2010","moduleTitle":"Data Structures and Algorithms II","moduleCredit":"4"};
+var mod5 = {"moduleCode":"CS2100","moduleTitle":"Computer Organisation","moduleCredit":"4"};
+var mod6 = {"moduleCode":"CS2103T","moduleTitle":"Software Engineering","moduleCredit":"4"}
+var mod7 = {"moduleCode":"CS2105","moduleTitle":"Introduction to Computer Networks","moduleCredit":"4"}
+var mod8 = {"moduleCode":"CS2106","moduleTitle":"Introduction to Operating Systems","moduleCredit":"4"}
+var mod9 = {"moduleCode":"CS3230","moduleTitle":"Design and Analysis of Algorithms","moduleCredit":"4"}
 
 moduleList.push(mod1);
 moduleList.push(mod2);
 moduleList.push(mod3);
 moduleList.push(mod4);
 moduleList.push(mod5);
+moduleList.push(mod6);
+moduleList.push(mod7);
+moduleList.push(mod8);
+moduleList.push(mod9);
 //end of temporary array
 
 mainApp.factory('Mapper', ['Module', function(Module) {
 
   var Mapper = {
+  module : "",
   modules : [], 
   core : [], 
   csBD : [], 
   gem : [], 
   ue : [],
   preclusions: [],
+  prereqList: [],
   totalMC : 0,
   coreMC : 0,
   csBDMC : 0,
   gemMC : 0,
   ueMC : 0,
   message : "",
+  selectedModule : false
   }; 
 // init Prereq
 
@@ -49,6 +60,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   var m = Mapper;
 
   Mapper.add = (module, index) => {//add is a method of object Mapper
+  	Mapper.prereqList = [];
 
   	var valid = addCheck(module);
   	var clearedPrerequisite = eval_hasPrereq(module,index);
@@ -56,6 +68,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   	var addedmc = parseInt(module.moduleCredit);
 
   	if(valid && clearedPrerequisite && !clearedPreclusion){
+  		Mapper.selectedModule = false;
     	mods.push(module);
     	m.totalMC += addedmc;
     	console.log(preclu);
@@ -74,6 +87,8 @@ mainApp.factory('Mapper', ['Module', function(Module) {
     		console.log("fku");
     	}
 	} else{
+		Mapper.selectedModule = true;
+		module = module.moduleCode;
 		console.log("omginvalid");
 	}
 
@@ -172,19 +187,26 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 				return contains(Mapper.prereq[index].preclusion.or[0]);
 			}
 		} else if(Mapper.prereq[index].preclusion.and){
-			for(i = 0; i < Mapper.prereq[index].preclusion.and.length; i++){
-				for(j = 0; j < mods.length; j++){
-					if(angular.equals(Mapper.prereq[index].preclusion.and[i],mods[j].moduleCode)){
-					checker = false;
-				} else {
-					checker = true; 
-					break; //once a module is not in the 'mods' array, means can take
-				}	
+			if(Mapper.prereq[index].preclusion.and.length >1){
+				for(i = 0; i < Mapper.prereq[index].preclusion.and.length; i++){
+					if(Mapper.prereq[index].preclusion.and[i].or){
+						for(j = 0; j < Mapper.prereq[index].preclusion.and.or.length; j++){
+							for(k = 0; k < mods.length; k++){
+								if(angular.equals(Mapper.prereq[index].preclusion.and[i].or[j],mods[k].moduleCode)){
+									checker = true;
+								}
+							}
+						}
+						return checker; //if false, means can take module as not all modules are in 'mods' array
+					} else {
+						return eval_hasPreclu(Mapper.prereq[index].preclusion.and[0],index) || eval_hasPreclu({"and" : Mapper.prereq[index].preclusion.and.splice(0,1)},index);
+					}
+				}
+			} else {
+				return contains(Mapper.prereq[index].preclusion.and[0]);
 			}
-		}
-			return checker; //if false, means can take module as not all modules are in 'mods' array
 		} else {
-			alert("error in input! -preclu")
+			alert("error in input! -preclu");
 		}
 	}
 
@@ -206,11 +228,15 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 	output: true if module can be added, false if otherwise
 	*/
 	function eval_hasPrereq(module, index){
-		var checker = false;
+		var checkerAND = false;
+		var checkerOR = false;
 
 		if(angular.isString(module)){ //Base Case 1: 1 Prereq left
 			console.log("got here!-prereq_1");
 			console.log(contains(module));
+			if(!(contains(module))){
+				Mapper.prereqList.push(module.moduleCode);
+			}
 			return contains(module);
 		} else if(angular.isString(Mapper.prereq[index].prerequisite)){ //Base Case 2: Only 1 Prereq to begin with
 			return contains(Mapper.prereq[index].prerequisite);
@@ -218,36 +244,58 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 			console.log("No Pre-requisites");
 			return true;
 		} else if(Mapper.prereq[index].prerequisite.or){ //Module has Prereqs that are type 'or'
-			if(Mapper.prereq[index].prerequisite.or.length >1){ //More than 1 Prereq nested in 'or'
+			for(l = 0; l < Mapper.prereq[index].prerequisite.or.length; l++){
+				for(m = 0; m < mods.length; m++){
+					if(angular.equals(Mapper.prereq[index].prerequisite.or[l],mods[m].moduleCode)){
+						checkerOR = true;
+					}
+				}
+			}
+			if(!(checkerOR)){
+				for(n = 0; n < Mapper.prereq[index].prerequisite.or.length; n++){
+					Mapper.prereqList.push(Mapper.prereq[index].prerequisite.or[n]);
+				}
+			}
+			return checkerOR;
+			/*if(Mapper.prereq[index].prerequisite.or.length >1){ //More than 1 Prereq nested in 'or'
 				console.log("got here!-prereq_2");
-				return eval_hasPrereq(Mapper.prereq[index].prerequisite.or[0],index) || eval_hasPrereq({"or" : Mapper.prereq[index].prerequisite.or.splice(0,1)},index);
+				return (eval_hasPrereq(Mapper.prereq[index].prerequisite.or[0],index) || eval_hasPrereq({"or" : Mapper.prereq[index].prerequisite.or.splice(0,1)},index));
 			} else{ //Only 1 prereq in 'or'
 				console.log("got here!-prereq_3");
 				console.log(Mapper.prereq[index].prerequisite.or[0]);
+				console.log(contains(Mapper.prereq[index].prerequisite.or[0]));
 				return contains(Mapper.prereq[index].prerequisite.or[0]);
-			}
+			}*/
 		} else if(Mapper.prereq[index].prerequisite.and){ //Module has Prereqs that are type 'and'
-			if(Mapper.prereq[index].prerequisite.and.length >1){ //More than 1 Prereq nested in 'and'
+			//if(Mapper.prereq[index].prerequisite.and.length >1){ //More than 1 Prereq nested in 'and'
 				for (i = 0; i < Mapper.prereq[index].prerequisite.and.length; i++){
+					console.log(Mapper.prereq[index].prerequisite.and[i].or);
 					if(Mapper.prereq[index].prerequisite.and[i].or){ //'or' nested within 'and'
 						console.log("got here!-prereq_6");
 						for(j = 0; j < Mapper.prereq[index].prerequisite.and[i].or.length; j++){
 							for(k = 0; k < mods.length; k++){
-								if(angular.equals(Mapper.prereq[index].prerequisite.and[i].or[j],mods[k])){
-									checker = true;
+								if(angular.equals(Mapper.prereq[index].prerequisite.and[i].or[j],mods[k].moduleCode)){
+									checkerAND = true;
 								}
 							}
 						}
-						return checker;
+						if(!(checkerAND)){
+							for(p = 0; p < Mapper.prereq[index].prerequisite.and.length; p++){
+								for(o = 0; o < Mapper.prereq[index].prerequisite.and[i].or.length; o++){
+									Mapper.prereqList.push(Mapper.prereq[index].prerequisite.and[i].or[o]);
+								}
+							}
+						}
+						return checkerAND;
 					} else {
 						console.log("got here!-prereq_4");
 						return eval_hasPrereq(Mapper.prereq[index].prerequisite.and[0],index) || eval_hasPrereq({"and" : Mapper.prereq[index].prerequisite.and.splice(0,1)},index);
 					}
 				}
-			} else{ //Only 1 prereq in 'and'
+			/*} else{ //Only 1 prereq in 'and'
 				console.log("got here!-prereq_5");
 				return contains(Mapper.prereq[index].prerequisite.and[0]);
-			}
+			}*/
 		} else{
 			alert("error in input! -prereq");
 		}

@@ -26,7 +26,6 @@ angular.module('myApp.view1', ['ngRoute'])
 		this.prereq = data;
 		//console.log(this.prereq);
 	});
-
 	
 	this.getIndex = (module) => {
 		var code = module.moduleCode;

@@ -35,8 +35,15 @@
 	</form>
 	</div>
 
+	<div ng-show="vm.Mapper.selectedModule">
+		Pre-requisites not cleared yet, please select them first.
+		{{vm.Mapper.prereqList}}
+	</div>
+
 	{{vm.selected}}
-	<a href="#" class="push_button blue" ng-click="vm.addModule(vm.selected)"> Click to add module! </a>
+	<a href="#" class="push_button blue" ng-click="vm.addModule(vm.selected)" ng-click="vm.myPrereqCheck()"> Click to add module! </a>
+
+	<p id="prereqCheck"></p>
 	<!--<a href="#" class="push_button red" ng-click="vm.removeModule($index)"> Click to remove module! </a>-->
 
 	<div class="container-fluid">
