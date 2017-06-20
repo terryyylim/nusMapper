@@ -44,7 +44,7 @@ angular.module('myApp.view1', ['ngRoute'])
 
 	this.addModule = (module) => {
 		console.log(module);
-		module = JSON.parse(module);
+		//module = JSON.parse(module);
 		var index = that.getIndex(module);
 		Mapper.add(module, index);
 	}
