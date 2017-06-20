@@ -26,17 +26,17 @@
 	<form>
 		<select ng-model="vm.selected">
 		<option ng-repeat="module in vm.modules | filter: vm.search | limitTo: 10 track by $index" value="{{module}}">
-
+			
 			<li><td>{{module.moduleCode}} {{$index}}</td>
 			<td>{{module.moduleTitle}}</td></li>
-
+			
 		</option>
 		</select>
 	</form>
 	</div>
 
 	<div ng-show="vm.Mapper.selectedModule">
-		Pre-requisites not cleared yet, please select them first.
+		Please ensure you have cleared the list of pre-requisites as shown below first.
 		{{vm.Mapper.prereqList}}
 	</div>
 
