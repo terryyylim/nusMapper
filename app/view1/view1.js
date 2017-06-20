@@ -38,9 +38,13 @@ angular.module('myApp.view1', ['ngRoute'])
 		return -1;
 	}
 
+	this.parseSelected = () => {
+		this.selected = JSON.parse(this.selected);
+	}
 
 	this.addModule = (module) => {
-		module = JSON.parse(module);
+		console.log(module);
+		//module = JSON.parse(module);
 		var index = that.getIndex(module);
 		Mapper.add(module, index);
 	}

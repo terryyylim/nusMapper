@@ -180,12 +180,12 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 			return false; //No Preclusions, so able to just take the module
 		} else if(Mapper.prereq[index].preclusion.or) {
 			if(Mapper.prereq[index].preclusion.or.length > 1){
-				console.log("Got here!-preclu_1");
+				//console.log("Got here!-preclu_1");
 				return eval_hasPreclu(Mapper.prereq[index].preclusion.or[0],index) || eval_hasPreclu({"or" : Mapper.prereq[index].preclusion.or.splice(0,1)},index);
 			} else {
 				return contains(Mapper.prereq[index].preclusion.or[0]);
 			}
-		} else if(Mapper.prereq[index].preclusion.and){
+		} /*else if(Mapper.prereq[index].preclusion.and){
 			if(Mapper.prereq[index].preclusion.and.length >1){
 				for(i = 0; i < Mapper.prereq[index].preclusion.and.length; i++){
 					if(Mapper.prereq[index].preclusion.and[i].or){
@@ -204,7 +204,16 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 			} else {
 				return contains(Mapper.prereq[index].preclusion.and[0]);
 			}
-		} else {
+		}*/
+		else if(Mapper.prereq[index].preclusion.and) {	// recursive elif
+			if(Mapper.prereq[index].preclusion.and.length > 1){
+				//console.log("Got here!-preclu_1");
+				return eval_hasPreclu(Mapper.prereq[index].preclusion.and[0],index) && eval_hasPreclu({"and" : Mapper.prereq[index].preclusion.and.splice(0,1)},index);
+			} else {
+				return contains(Mapper.prereq[index].preclusion.and[0]);
+			}
+		}
+		 else {
 			alert("error in input! -preclu");
 		}
 	}
@@ -221,11 +230,40 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		}
 		return added;
 	}
-
+	function eval_hasPrereq(module, index){
+		//let prereq = Mapper.prereq[index].prerequisite === "undefined" ? 
+		//				Mapper.Mapper.prereq[index].prerequisite : undefined;
+		let prereq = Mapper.prereq[index].prerequisite;
+		if(angular.isString(module)){ //Base Case 1: 1 Preclu left
+			return contains(module); //if true, means cannot take this module anymore
+		} else if(angular.isString(prereq)){ //Base Case 2: Only 1 Preclu to begin with
+			return contains(prereq);
+		} else if(typeof prereq === "undefined"){ //Base Case 3: No Preclu
+			console.log("No Prereqs");
+			return true; //No Preclusions, so able to just take the module
+		} else if(prereq.or) {
+			if(prereq.or.length > 1){
+				//console.log("Got here!-preclu_1");
+				return eval_hasPrereq(prereq.or[0],index) || eval_hasPrereq({"or" : prereq.or.splice(0,1)},index);
+			} else {
+				return contains(prereq.or[0]);
+			}
+		} else if(prereq.and) {
+			if(prereq.and.length > 1){
+				//console.log("Got here!-preclu_1");
+				return eval_hasPrereq(prereq.and[0],index) && eval_hasPrereq({"and" : prereq.and.splice(0,1)},index);
+			} else {
+				return contains(prereq.and[0]);
+			}
+		} else{
+			alert("input error");
+		}
+	}
 	/*
 	Expected input: prerequisite param of module, either a string or a json object
 	output: true if module can be added, false if otherwise
 	*/
+	/*
 	function eval_hasPrereq(module, index){
 		var checkerAND = false;
 		var checkerOR = false;
@@ -256,6 +294,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 				}
 			}
 			return checkerOR;
+			*/
 			/*if(Mapper.prereq[index].prerequisite.or.length >1){ //More than 1 Prereq nested in 'or'
 				console.log("got here!-prereq_2");
 				return (eval_hasPrereq(Mapper.prereq[index].prerequisite.or[0],index) || eval_hasPrereq({"or" : Mapper.prereq[index].prerequisite.or.splice(0,1)},index));
@@ -265,6 +304,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 				console.log(contains(Mapper.prereq[index].prerequisite.or[0]));
 				return contains(Mapper.prereq[index].prerequisite.or[0]);
 			}*/
+			/*
 		} else if(Mapper.prereq[index].prerequisite.and){ //Module has Prereqs that are type 'and'
 			//if(Mapper.prereq[index].prerequisite.and.length >1){ //More than 1 Prereq nested in 'and'
 				for (i = 0; i < Mapper.prereq[index].prerequisite.and.length; i++){
@@ -295,10 +335,12 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 				console.log("got here!-prereq_5");
 				return contains(Mapper.prereq[index].prerequisite.and[0]);
 			}*/
+			/*
 		} else{
 			alert("error in input! -prereq");
 		}
-	}
+
+	}*/
 
 //END OF PRE-REQUISITE CONDITIONS
   }

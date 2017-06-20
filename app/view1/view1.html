@@ -24,7 +24,7 @@
 
 	<div ng-show="vm.modules && vm.search">
 	<form>
-		<select ng-model="vm.selected">
+		<select ng-model="vm.selected" ng-change="vm.parseSelected()">
 		<option ng-repeat="module in vm.modules | filter: vm.search | limitTo: 10 track by $index" value="{{module}}">
 			
 			<li><td>{{module.moduleCode}} {{$index}}</td>
@@ -39,8 +39,7 @@
 		Please ensure you have cleared the list of pre-requisites as shown below first.
 		{{vm.Mapper.prereqList}}
 	</div>
-
-	{{vm.selected}}
+	{{vm.selected.moduleCode}}
 	<a href="#" class="push_button blue" ng-click="vm.addModule(vm.selected)" ng-click="vm.myPrereqCheck()"> Click to add module! </a>
 
 	<p id="prereqCheck"></p>
