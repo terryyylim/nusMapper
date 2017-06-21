@@ -96,6 +96,8 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		console.log(inMapper(module));
 		console.log(isCore(module));
 		console.log(eval_hasPreclu(module,index));
+		console.log(false || false);
+		console.log(true && false);
 		//console.log(eval_hasPrereq(module, index));
 		//console.log(inMapper(Mapper.prereq)); //LSM2241 for testing
 		return inMapper(module);
@@ -230,14 +232,15 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		}
 		return added;
 	}
-	
+
 	function eval_hasPrereq(prereq){  // v2
 		console.log(prereq);
 		//let prereq = Mapper.prereq[index].prerequisite === "undefined" ? 
 		//				Mapper.Mapper.prereq[index].prerequisite : undefined;
-		if(prereq === undefined){ //Base Case 1: 1 Preclu left
-			return true; //if true, means cannot take this module anymore
-		} else if(angular.isString(prereq)){ //Base Case 2: Only 1 Preclu to begin with
+		if(prereq === undefined){ //Base Case 1: No Prerequisites
+			return true; //if true, means can take this module 
+		} else if(angular.isString(prereq)){ //Base Case 2: Only 1 Prereq to begin with
+			console.log(contains(prereq));
 			return contains(prereq);
 		} else if(prereq.or) {
 			if(prereq.or.length > 1){
@@ -249,6 +252,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		} else if(prereq.and) {
 			if(prereq.and.length > 1){
 				//console.log("Got here!-preclu_1");
+				console.log(eval_hasPrereq(prereq.and[0]) && eval_hasPrereq({"and" : prereq.and.splice(0,1)}));
 				return eval_hasPrereq(prereq.and[0]) && eval_hasPrereq({"and" : prereq.and.splice(0,1)});
 			} else {
 				return eval_hasPrereq(prereq.and[0]);
