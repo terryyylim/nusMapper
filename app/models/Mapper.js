@@ -62,7 +62,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   	Mapper.prereqList = [];
 
   	var valid = addCheck(module);
-  	var clearedPrerequisite = eval_hasPrereq(module,index);
+  	var clearedPrerequisite = eval_hasPrereq(Mapper.prereq[index].prerequisite);
   	var clearedPreclusion = eval_hasPreclu(module,index);
   	var addedmc = parseInt(module.moduleCredit);
 
@@ -183,7 +183,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 				//console.log("Got here!-preclu_1");
 				return eval_hasPreclu(Mapper.prereq[index].preclusion.or[0],index) || eval_hasPreclu({"or" : Mapper.prereq[index].preclusion.or.splice(0,1)},index);
 			} else {
-				return contains(Mapper.prereq[index].preclusion.or[0]);
+				return eval_hasPreclu(Mapper.prereq[index].preclusion.or[0], index);
 			}
 		} /*else if(Mapper.prereq[index].preclusion.and){
 			if(Mapper.prereq[index].preclusion.and.length >1){
@@ -210,7 +210,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 				//console.log("Got here!-preclu_1");
 				return eval_hasPreclu(Mapper.prereq[index].preclusion.and[0],index) && eval_hasPreclu({"and" : Mapper.prereq[index].preclusion.and.splice(0,1)},index);
 			} else {
-				return contains(Mapper.prereq[index].preclusion.and[0]);
+				return eval_hasPreclu(Mapper.prereq[index].preclusion.and[0], index);
 			}
 		}
 		 else {
@@ -230,11 +230,40 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		}
 		return added;
 	}
-
+	
+	function eval_hasPrereq(prereq){  // v2
+		console.log(prereq);
+		//let prereq = Mapper.prereq[index].prerequisite === "undefined" ? 
+		//				Mapper.Mapper.prereq[index].prerequisite : undefined;
+		if(prereq === undefined){ //Base Case 1: 1 Preclu left
+			return true; //if true, means cannot take this module anymore
+		} else if(angular.isString(prereq)){ //Base Case 2: Only 1 Preclu to begin with
+			return contains(prereq);
+		} else if(prereq.or) {
+			if(prereq.or.length > 1){
+				//console.log("Got here!-preclu_1");
+				return eval_hasPrereq(prereq.or[0]) || eval_hasPrereq({"or" : prereq.or.splice(0,1)});
+			} else {
+				return eval_hasPrereq(prereq.or[0]);
+			}
+		} else if(prereq.and) {
+			if(prereq.and.length > 1){
+				//console.log("Got here!-preclu_1");
+				return eval_hasPrereq(prereq.and[0]) && eval_hasPrereq({"and" : prereq.and.splice(0,1)});
+			} else {
+				return eval_hasPrereq(prereq.and[0]);
+			}
+		} else{
+			alert("input error");
+		}
+	}
+	/*   v1
+>>>>>>> 7c59d8fa62fa95647cc213a39015956a81fefee5
 	function eval_hasPrereq(module, index){
 		//let prereq = Mapper.prereq[index].prerequisite === "undefined" ? 
 		//				Mapper.Mapper.prereq[index].prerequisite : undefined;
-		let prereq = Mapper.prereq[index].prerequisite;
+		console.log(module);
+		let prereq = module;
 		if(angular.isString(module)){ //Base Case 1: 1 Preclu left
 			return contains(module); //if true, means cannot take this module anymore
 		} else if(angular.isString(prereq)){ //Base Case 2: Only 1 Preclu to begin with
@@ -247,19 +276,20 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 				//console.log("Got here!-prereq_2");
 				return eval_hasPrereq(prereq.or[0],index) || eval_hasPrereq({"or" : prereq.or.splice(0,1)},index);
 			} else {
-				return contains(prereq.or[0]);
+				return eval_hasPrereq(prereq.or[0], index);
 			}
 		} else if(prereq.and) {
 			if(prereq.and.length > 1){
 				//console.log("Got here!-prereq_1");
 				return eval_hasPrereq(prereq.and[0],index) && eval_hasPrereq({"and" : prereq.and.splice(0,1)},index);
 			} else {
-				return contains(prereq.and[0]);
+				return eval_hasPrereq(prereq.and[0], index);
 			}
 		} else{
 			alert("input error");
 		}
 	}
+	*/
 	/*
 	Expected input: prerequisite param of module, either a string or a json object
 	output: true if module can be added, false if otherwise
