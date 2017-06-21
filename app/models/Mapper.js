@@ -230,6 +230,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		}
 		return added;
 	}
+
 	function eval_hasPrereq(module, index){
 		//let prereq = Mapper.prereq[index].prerequisite === "undefined" ? 
 		//				Mapper.Mapper.prereq[index].prerequisite : undefined;
@@ -243,14 +244,14 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 			return true; //No Preclusions, so able to just take the module
 		} else if(prereq.or) {
 			if(prereq.or.length > 1){
-				//console.log("Got here!-preclu_1");
+				//console.log("Got here!-prereq_2");
 				return eval_hasPrereq(prereq.or[0],index) || eval_hasPrereq({"or" : prereq.or.splice(0,1)},index);
 			} else {
 				return contains(prereq.or[0]);
 			}
 		} else if(prereq.and) {
 			if(prereq.and.length > 1){
-				//console.log("Got here!-preclu_1");
+				//console.log("Got here!-prereq_1");
 				return eval_hasPrereq(prereq.and[0],index) && eval_hasPrereq({"and" : prereq.and.splice(0,1)},index);
 			} else {
 				return contains(prereq.and[0]);
