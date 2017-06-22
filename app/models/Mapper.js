@@ -244,7 +244,6 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 			return contains(prereq);
 		} else if(prereq.or) {
 			if(prereq.or.length > 1){
-				console.log(eval_hasPrereq(prereq.or[0]));
 				return eval_hasPrereq(prereq.or[0]) || eval_hasPrereq({"or" : prereq.or.slice(1)});
 			} else {
 				console.log(eval_hasPrereq(prereq.or[0]));
@@ -253,7 +252,6 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		} else if(prereq.and) {
 			if(prereq.and.length > 1){
 				//console.log("Got here!-preclu_1");
-				console.log(eval_hasPrereq(prereq.and[0]) && eval_hasPrereq({"and" : prereq.and.slice(0,1)}));
 				return eval_hasPrereq(prereq.and[0]) && eval_hasPrereq({"and" : prereq.and.slice(1)});
 			} else {
 				return eval_hasPrereq(prereq.and[0]);

@@ -12,35 +12,59 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	<!-- Start of Coding -->
-	<div id="totalMC">
-		Total MC Count: {{vm.Mapper.totalMC}}
+	<!--<img src="css/nusMapperLogo.jpeg">-->
+<div class="overall-overall"> 
+	<div class="overall">
+		<div class="topleft">
+			<img class="nusMapperLogo" src="css/nusMapperLogo.jpeg">
+		</div>
+
+		<div class="topmiddle">
+			<div ng-controller="View1Ctrl as vm">
+				<center><h1>Module Mapping Begins!</h1></center>
+				<!--onkeyup, is the calling of function after user releases his finger on keyboard-->
+
+				<center><input type="text" ng-model="vm.search" name="modules" class="navbar-form" id="myInput" placeholder="Type your module code here"/></center>
+
+				<div ng-show="vm.modules && vm.search">
+					<form>
+						<select ng-model="vm.selected" ng-change="vm.parseSelected()">
+						<option ng-repeat="module in vm.modules | filter: vm.search | limitTo: 10 track by $index" value="{{module}}">
+							
+							<li><td>{{module.moduleCode}} {{$index}}</td>
+							<td>{{module.moduleTitle}}</td></li>
+							
+						</option>
+						</select>
+					</form>
+				</div>
+				</center>
+
+				<div ng-show="vm.Mapper.selectedModule">
+					<center><strong>Please ensure you have cleared the list of pre-requisites as shown below first.
+					{{vm.Mapper.prereqList}}</strong></center>
+				</div>
+
+				<center><p>Selected Module Code: {{vm.selected.moduleCode}}</p></center>
+				<center><p>Selected Module Title: {{vm.selected.moduleTitle}}</p></center>
+				<center><p>Selected Module Credit: {{vm.selected.moduleCredit}}</p></center>
+				<center><a href="#" class="push_button blue" ng-click="vm.addModule(vm.selected)" ng-click="vm.myPrereqCheck()">Click to add module!</a></center>
+			</div>
+		</div>
+
+		<div class="topright">
+			<div id="totalMC">
+				Total MC Count <div id="center1">{{vm.Mapper.totalMC}}</div>
+			</div>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+		</div>
 	</div>
-
-	<div ng-controller="View1Ctrl as vm">
-	<h1>Module Mapping Begins!</h1>
-	<!--onkeyup, is the calling of function after user releases his finger on keyboard-->
-
-	<input type="text" ng-model="vm.search" name="modules" class="navbar-form" id="myInput" placeholder="Type your module code here"/>
-
-	<div ng-show="vm.modules && vm.search">
-	<form>
-		<select ng-model="vm.selected" ng-change="vm.parseSelected()">
-		<option ng-repeat="module in vm.modules | filter: vm.search | limitTo: 10 track by $index" value="{{module}}">
-			
-			<li><td>{{module.moduleCode}} {{$index}}</td>
-			<td>{{module.moduleTitle}}</td></li>
-			
-		</option>
-		</select>
-	</form>
-	</div>
-
-	<div ng-show="vm.Mapper.selectedModule">
-		Please ensure you have cleared the list of pre-requisites as shown below first.
-		{{vm.Mapper.prereqList}}
-	</div>
-	{{vm.selected.moduleCode}}
-	<a href="#" class="push_button blue" ng-click="vm.addModule(vm.selected)" ng-click="vm.myPrereqCheck()"> Click to add module! </a>
 
 	<p id="prereqCheck"></p>
 	<!--<a href="#" class="push_button red" ng-click="vm.removeModule($index)"> Click to remove module! </a>-->
@@ -133,3 +157,4 @@
 			</table>
 		</div>
 	</div>
+</div>
