@@ -96,7 +96,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		console.log(inMapper(module));
 		console.log(isCore(module));
 		console.log(eval_hasPreclu(module,index));
-		console.log(false || false);
+		console.log(true || false);
 		console.log(true && false);
 		//console.log(eval_hasPrereq(module, index));
 		//console.log(inMapper(Mapper.prereq)); //LSM2241 for testing
@@ -244,16 +244,17 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 			return contains(prereq);
 		} else if(prereq.or) {
 			if(prereq.or.length > 1){
-				//console.log("Got here!-preclu_1");
-				return eval_hasPrereq(prereq.or[0]) || eval_hasPrereq({"or" : prereq.or.splice(0,1)});
+				console.log(eval_hasPrereq(prereq.or[0]));
+				return eval_hasPrereq(prereq.or[0]) || eval_hasPrereq({"or" : prereq.or.slice(1)});
 			} else {
+				console.log(eval_hasPrereq(prereq.or[0]));
 				return eval_hasPrereq(prereq.or[0]);
 			}
 		} else if(prereq.and) {
 			if(prereq.and.length > 1){
 				//console.log("Got here!-preclu_1");
-				console.log(eval_hasPrereq(prereq.and[0]) && eval_hasPrereq({"and" : prereq.and.splice(0,1)}));
-				return eval_hasPrereq(prereq.and[0]) && eval_hasPrereq({"and" : prereq.and.splice(0,1)});
+				console.log(eval_hasPrereq(prereq.and[0]) && eval_hasPrereq({"and" : prereq.and.slice(0,1)}));
+				return eval_hasPrereq(prereq.and[0]) && eval_hasPrereq({"and" : prereq.and.slice(1)});
 			} else {
 				return eval_hasPrereq(prereq.and[0]);
 			}
