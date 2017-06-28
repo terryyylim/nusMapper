@@ -1,7 +1,42 @@
 {
-	core:["CS1010", "CS1231", "CS2030", "CS2040", "CS2100", "CS2103T", "CS2105", "CS2106", "CS3230",
-	"CS3201", "CS3216", "CS3202", "CS3217", "CS3281", "CS3282", "CP3880", "CP3200", "IS4010", "CP4101", 
-	"IS1103", "CS2101", "ES2660", "MA1521", "MA1101R", "ST2334"  
-	]
+	"compulsory": [
+	/*
+	Computer Science Foundation	36
+	*/	
+	"CS1010", "CS1231", "CS2030", "CS2040", "CS2100", 
+	"CS2103T", "CS2105", "CS2106", "CS3230",
+	/*
+	IT Professionalism	12
+	*/
+	"IS1103", "CS2101", "ES2660", // professional comm
+	/*
+	Mathematics and Sciences  16
+	*/
+	"MA1521", "MA1101R", "ST2334"], // math and science 
+	// maybe can split into different sections... hmm
+	// mc count also not inside. maybe it can be an object with mcs as a field...
+
+
+	/*
+Complete at least 8 MCs of Computer Systems Team Project modules from the following pairs, or modules approved by the Department of Computer Science:
+
+CS3201 Software Engineering Project I and CS3202 Software Engineering Project II, or
+CS3216 Software Product Engineering for Digital Markets and CS3217 Software Engineering on Modern Application Platforms, or
+CS3281 Thematic Systems Project I and CS3282 Thematic Systems Project II.
+8
+Industrial Experience Requirement	
+12
+*/
+	"depth2":{"or":[{"and": ["CS3201", "CS3202"]}, {"and": ["CS3216", "CS3217"]}, {"and": ["CS3281", "CS3282"]}]}
+/* not yet accounted for
+tough need some thinking 
+	Computer Science Breadth and Depth	
+44
+Complete 24 MCs of CS modules by satisfying the following conditions:
+Satisfy at least one CS Focus Area for BComp(CS) by completing 3 modules in the Area Primaries, with at least one module at level-4000 or above. Computer Science Foundation modules that appear in Area Primaries can be counted as one of the 3 modules towards satisfying a Focus Area.
+At least 12 MCs are at level-4000 or above.
+24
+*/
+
 
 }
