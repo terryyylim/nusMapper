@@ -36,6 +36,17 @@ mainApp.factory('Module', ['$http', '$q', function($http,$q) {
         });
       });
     }
+
+    Module.getCourseMods = () => {
+      return $q(function(resolve,reject){
+        $http.get("nusmods/csmods.json")
+        .then(function(response){
+          resolve(response.data);
+        }).catch(function(error){
+          reject(error);
+        });
+      });
+    }
     
 return Module;
 }]);

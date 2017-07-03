@@ -50,6 +50,10 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		Mapper.prereq = data;
 	});
 
+	Module.getCourseMods().then((data) => {
+		Mapper.course = data;
+	});
+
   //Mapper is an object with an attribute modules which is an empty array
   var mods = Mapper.modules; //mods is an array of modules, to count total MCs
   var core = Mapper.core; //core tracks core mods taken
@@ -96,10 +100,8 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 		console.log(inMapper(module));
 		console.log(isCore(module));
 		console.log(eval_hasPreclu(module,index));
-		console.log(true || false);
-		console.log(true && false);
-		//console.log(eval_hasPrereq(module, index));
-		//console.log(inMapper(Mapper.prereq)); //LSM2241 for testing
+		console.log(Mapper.prereq);
+		console.log(Mapper.course.compulsory);
 		return inMapper(module);
 	}
 

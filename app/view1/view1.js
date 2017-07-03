@@ -26,6 +26,10 @@ angular.module('myApp.view1', ['ngRoute'])
 		this.prereq = data;
 		//console.log(this.prereq);
 	});
+
+	Module.getCourseMods().then((data) => {
+		this.course = data;
+	});
 	
 	this.getIndex = (module) => {
 		var code = module.moduleCode;
