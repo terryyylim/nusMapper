@@ -17,6 +17,9 @@
 		color: white;
 		position: center;
 	}
+	#choice {
+		background-color: black;
+	}
 </style>
 
 <head>
@@ -33,18 +36,18 @@
 		<center><div ng-app ng-controller="View2Ctrl as vm2">
 			<div id="options">
 				Choose Your Faculty:
-				<select ng-model="selectedSource" ng-options="source.name for source in faculty">
-    				<option value="">-- Select item --</option>
+				<select id="choice" ng-model="selectedSource" ng-options="source.name for source in faculty">
+    				<option value="">-- Select Faculty --</option>
 				</select>
 
-				<select ng-model="selectedItem" ng-options="item for item in selectedSource.suboptions.name" ng-change="storeSelection()">
-				    <option value="">-- Select item --</option>
+				<select id="choice" ng-model="selectedItem" ng-options="item for item in selectedSource.suboptions.name" ng-change="storeSelection()">
+				    <option value="">-- Select Course of Study --</option>
 				</select>
 				<!--<select ng-model="cart.faculty" ng-options="state as state.name for state in faculty" ng-style="{'background-color':state.color}"></select>-->
 			
 		</div></center>
 
-		<center><a href="#" class="push_button red" ng-click="vm.addModule(vm.selected)" ng-click="vm.myPrereqCheck()">Click to proceed!</a></center>
+		<center><a href="#" class="push_button red" ng-click="clicked()">Click to proceed!</a></center>
 		<p>This is the partial for view 2.</p>
 	</div>
 </body>

@@ -10,23 +10,9 @@ angular.module('myApp.view2', ['ngRoute'])
   });
 }])
 
-.controller('View2Ctrl', ["$http", "$scope", function($http, $scope) {
+.controller('View2Ctrl', ["$http", "$scope", "Mapper", function($http, $scope, Mapper) {
+	this.Mapper = Mapper;
 	var selected;
-
-	var faculties = ["School of Computing", "School of Engineering", "NUS Business School"];
-	var courses = [["Business Analytics","Computer Science", "Information System", "Information Security"],
-				["Biomedical Engineering","Chemical Engineering","Civil Engineering","Electrical Engineering",
-				"Mechanical Engineering"],
-				["Accountancy","Business Administration"]];
-
-	$scope.faculty = faculties;
-	$scope.courseOptions = [];
-	$scope.getCourseOptions = function(){
-		var key = $scope.faculty.indexOf($scope.faculty);
-		var myNewOptions = courses[key];
-
-		$scope.courseOptions = myNewOptions;
-	};
 	
 	$scope.faculty = [{
 		'name': 'School of Computing',
@@ -53,7 +39,11 @@ angular.module('myApp.view2', ['ngRoute'])
 	//Store selected course so as to access correct conditions for user's course of study
 	$scope.storeSelection = function() {
 		selected = $scope.selectedItem;
+		console.log(selected);
 	}
 
+	$scope.clicked = function() {
+		window.location = "#/view1.html";
+	}
 
 }]);

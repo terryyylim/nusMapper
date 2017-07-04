@@ -1,6 +1,7 @@
 var mainApp = angular.module('myApp');
 
 //start of temporary array
+console.log(selected);
 var moduleList = [];
 
 var mod1 = {"moduleCode":"CS1010","moduleTitle":"Programming Methodology","moduleCredit":"4"};
