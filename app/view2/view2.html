@@ -33,15 +33,15 @@
 		<center><div ng-app ng-controller="View2Ctrl as vm2">
 			<div id="options">
 				Choose Your Faculty:
-				<select ng-model="cart.faculty" ng-options="state as state.name for state in faculty" ng-style="{'background-color':state.color}"></select>
+				<select ng-model="selectedSource" ng-options="source.name for source in faculty">
+    				<option value="">-- Select item --</option>
+				</select>
+
+				<select ng-model="selectedItem" ng-options="item for item in selectedSource.suboptions.name" ng-change="storeSelection()">
+				    <option value="">-- Select item --</option>
+				</select>
+				<!--<select ng-model="cart.faculty" ng-options="state as state.name for state in faculty" ng-style="{'background-color':state.color}"></select>-->
 			
-
-			Choose Your Faculty:
-			<select data-ng-model="faculty" data-ng-options="option for option in faculty" data-ng-change="getCourseOptions()"></select>
-
-			Choose Your Course:
-			<select data-ng-model="course" data-ng-options="option for option in course"></select>
-			</div>
 		</div></center>
 
 		<center><a href="#" class="push_button red" ng-click="vm.addModule(vm.selected)" ng-click="vm.myPrereqCheck()">Click to proceed!</a></center>

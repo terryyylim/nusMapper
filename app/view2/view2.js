@@ -11,6 +11,7 @@ angular.module('myApp.view2', ['ngRoute'])
 }])
 
 .controller('View2Ctrl', ["$http", "$scope", function($http, $scope) {
+	var selected;
 
 	var faculties = ["School of Computing", "School of Engineering", "NUS Business School"];
 	var courses = [["Business Analytics","Computer Science", "Information System", "Information Security"],
@@ -29,18 +30,30 @@ angular.module('myApp.view2', ['ngRoute'])
 	
 	$scope.faculty = [{
 		'name': 'School of Computing',
-		'color': 'Black'
-	}, {
-		'name': 'Faculty of Arts and Social Sciences',
-		'color': 'Black'
-	}, {
+		'color': 'Black',
+		'suboptions': 
+			{	name: ["Business Analytics","Computer Science","Information System", "Information Security"]
+	}}, {
+		'name': 'School of Engineering',
+		'color': 'Black',
+		'suboptions':
+			{	name: ["Biomedical Engineering","Chemical Engineering","Civil Engineering","Electrical Engineering",
+				"Mechanical Engineering"]
+	}}, {
 		'name': 'NUS Business School',
-		'color': 'Black'
-	}];
+		'color': 'Black',
+		'suboptions':
+			{	name: ["Accountancy","Business Administration"]
+	}}];
 
 	$scope.cart = {
 		'faculty': $scope.faculty[0]
 	};
+
+	//Store selected course so as to access correct conditions for user's course of study
+	$scope.storeSelection = function() {
+		selected = $scope.selectedItem;
+	}
 
 
 }]);
