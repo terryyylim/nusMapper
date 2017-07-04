@@ -1,0 +1,43 @@
+{
+	"compulsory": {"and": [
+
+		"ACC1002X","BT1101","CS1010S","CS1020","EC1301","IS1103","IS1105",
+		"MA1311","MA1521","MKT1003X","BT2101","BT2102","CS2010","ES2660",
+		{"or":["IE2110","DSC3214","DSN3701"]},"IS2101","ST2334","BT3101",
+		"BT3102","BT3103","ST3131"]},
+
+	/* Option 1:
+	Choose 6 modules to make up 24MCs from Lists A,B and C, with at least
+	2 modules each from Lists A and B. 5 of 6 modules must be at level-4000
+	*/
+
+	/* Option 2:
+	Choose BT4101 and 3 modules to make up 24MCs from Lists A,B and C,
+	with at least 1 module each from Lists A and B. 2 of 3 modules must be
+	at level-4000
+	*/
+	// Can give user choice to select either option 1 or 2 first? Then, start considering conditions.
+
+	"dissertation": [
+
+		"BT4101"],
+
+	"listA": [
+
+		{"or":["DSC3224","DSN3712"]},"IE3120","IS3240","BT4211",
+		"BT4212",{"or":["DSC4213","DSN3701"]},"IS4250",{"or":["MKT4415C",
+		"MKT4812"]}],
+
+	"listB": [
+
+		"CS3244",{"or":["DSC3216","DSN3803"]},{"or":["BSP4513","BSE4711"]},
+		"BT4221","BT4222","IS4241","IE4210","ST4240","ST4245"],
+
+	"listC": [
+
+		"IS3221","IS3261","IS4228","IS4302"],
+
+	"intern": [
+
+		"IS4010"]
+}
