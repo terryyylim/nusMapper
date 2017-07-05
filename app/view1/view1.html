@@ -21,6 +21,17 @@
 
 		<div class="topmiddle">
 			<div ng-controller="View1Ctrl as vm">
+				<div id="options">
+					Choose Your Faculty:
+					<select id="choice" ng-model="selectedSource" ng-options="source.name for source in faculty">
+	    				<option value="">-- Select Faculty --</option>
+					</select>
+
+					<select id="choice" ng-model="selectedItem" ng-options="item for item in selectedSource.suboptions.name" ng-change="storeSelection()">
+					    <option value="">-- Select Course of Study --</option>
+					</select>
+				</div>
+
 				<center><h1>Module Mapping Begins!</h1></center>
 				<!--onkeyup, is the calling of function after user releases his finger on keyboard-->
 

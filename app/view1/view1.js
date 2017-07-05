@@ -31,6 +31,35 @@ angular.module('myApp.view1', ['ngRoute'])
 		this.course = data;
 	});
 	
+	$scope.faculty = [{
+		'name': 'School of Computing',
+		'color': 'Black',
+		'suboptions': 
+			{	name: ["Business Analytics","Computer Science","Information System", "Information Security"]
+	}}, {
+		'name': 'School of Engineering',
+		'color': 'Black',
+		'suboptions':
+			{	name: ["Biomedical Engineering","Chemical Engineering","Civil Engineering","Electrical Engineering",
+				"Mechanical Engineering"]
+	}}, {
+		'name': 'NUS Business School',
+		'color': 'Black',
+		'suboptions':
+			{	name: ["Accountancy","Business Administration"]
+	}}];
+
+	$scope.cart = {
+		'faculty': $scope.faculty[0]
+	};
+
+	//Store selected course so as to access correct conditions for user's course of study
+	this.storeSelection = function() {
+		selected = $scope.selectedItem;
+		console.log(selected);
+		Mapper.setCourse($scope.selectedItem);
+	}
+
 	this.getIndex = (module) => {
 		var code = module.moduleCode;
 		//console.log(code);

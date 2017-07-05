@@ -3,6 +3,7 @@ var mainApp = angular.module('myApp');
 //start of temporary array
 var moduleList = [];
 
+
 var mod1 = {"moduleCode":"CS1010","moduleTitle":"Programming Methodology","moduleCredit":"4"};
 var mod2 = {"moduleCode":"CS1020","moduleTitle":"Data Structures and Algorithms I","moduleCredit":"4"};
 var mod3 = {"moduleCode":"CS1231","moduleTitle":"Discrete Structures","moduleCredit":"4"};
@@ -41,7 +42,8 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   gemMC : 0,
   ueMC : 0,
   message : "",
-  selectedModule : false
+  selectedModule : false,
+  selectedCourse : ""
   }; 
 // init Prereq
 
@@ -61,6 +63,12 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   var gem = Mapper.gem; //gem tracks gem mods taken
   var ue = Mapper.ue; //ue tracks ue mods taken
   var m = Mapper;
+
+  Mapper.setCourse = (course) => {
+  	Mapper.selectedCourse = course;
+
+  	//Parse in JSON data according to which course was selected
+  }
 
   Mapper.add = (module, index) => {//add is a method of object Mapper
   	Mapper.prereqList = [];
