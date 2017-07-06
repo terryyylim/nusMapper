@@ -55,9 +55,9 @@ angular.module('myApp.view1', ['ngRoute'])
 
 	//Store selected course so as to access correct conditions for user's course of study
 	this.storeSelection = function() {
-		selected = $scope.selectedItem;
+		var selected = $scope.selectedItem;
 		console.log(selected);
-		Mapper.setCourse($scope.selectedItem);
+		Mapper.setCourse(selected);
 	}
 
 	this.getIndex = (module) => {
@@ -73,6 +73,7 @@ angular.module('myApp.view1', ['ngRoute'])
 
 	this.parseSelected = () => {
 		this.selected = JSON.parse(this.selected);
+		console.log(this.selected);
 	}
 
 	this.addModule = (module) => {

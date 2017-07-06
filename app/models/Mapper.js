@@ -3,7 +3,6 @@ var mainApp = angular.module('myApp');
 //start of temporary array
 var moduleList = [];
 
-
 var mod1 = {"moduleCode":"CS1010","moduleTitle":"Programming Methodology","moduleCredit":"4"};
 var mod2 = {"moduleCode":"CS1020","moduleTitle":"Data Structures and Algorithms I","moduleCredit":"4"};
 var mod3 = {"moduleCode":"CS1231","moduleTitle":"Discrete Structures","moduleCredit":"4"};
@@ -43,7 +42,8 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   ueMC : 0,
   message : "",
   selectedModule : false,
-  selectedCourse : "",
+  selectedCourse : ""
+}
 
 // init Prereq
 
@@ -66,7 +66,7 @@ mainApp.factory('Mapper', ['Module', function(Module) {
 
   Mapper.setCourse = (course) => {
   	Mapper.selectedCourse = course;
-
+  	console.log(Mapper.selectedCourse);
   	//Parse in JSON data according to which course was selected
   }
 

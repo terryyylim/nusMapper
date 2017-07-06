@@ -27,7 +27,7 @@
 	    				<option value="">-- Select Faculty --</option>
 					</select>
 
-					<select id="choice" ng-model="selectedItem" ng-options="item for item in selectedSource.suboptions.name" ng-change="storeSelection()">
+					<select id="choice" ng-model="selectedItem" ng-options="item for item in selectedSource.suboptions.name" ng-change="vm.storeSelection()">
 					    <option value="">-- Select Course of Study --</option>
 					</select>
 				</div>
