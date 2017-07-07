@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.view1', ['ngRoute'])
+angular.module('myApp.view1', ['ngRoute', 'myApp.coursereq'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/view1', {
@@ -10,7 +10,7 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', ["$http", "$q", "$scope", "Module", "Mapper", function($http,$q, $scope, Module, Mapper) {
+.controller('View1Ctrl', ["$http", "$q", "$scope", "Module", "Mapper", "Coursereq", function($http,$q, $scope, Module, Mapper, Coursereq) {
 	this.Mapper = Mapper;
 	var that = this;
 
@@ -58,6 +58,7 @@ angular.module('myApp.view1', ['ngRoute'])
 		var selected = $scope.selectedItem;
 		console.log(selected);
 		Mapper.setCourse(selected);
+		Coursereq.setCourse(selected);
 	}
 
 	this.getIndex = (module) => {
