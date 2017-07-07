@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.view1', ['ngRoute'])
+angular.module('myApp.view1', ['ngRoute', 'myApp.coursereq'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/view1', {
@@ -10,7 +10,7 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', ["$http", "$q", "$scope", "Module", "Mapper", function($http,$q, $scope, Module, Mapper) {
+.controller('View1Ctrl', ["$http", "$q", "$scope", "Module", "Mapper", "Coursereq", function($http,$q, $scope, Module, Mapper, Coursereq) {
 	this.Mapper = Mapper;
 	var that = this;
 
@@ -55,9 +55,10 @@ angular.module('myApp.view1', ['ngRoute'])
 
 	//Store selected course so as to access correct conditions for user's course of study
 	this.storeSelection = function() {
-		selected = $scope.selectedItem;
+		var selected = $scope.selectedItem;
 		console.log(selected);
-		Mapper.setCourse($scope.selectedItem);
+		Mapper.setCourse(selected);
+		Coursereq.setCourse(selected);
 	}
 
 	this.getIndex = (module) => {
@@ -73,6 +74,7 @@ angular.module('myApp.view1', ['ngRoute'])
 
 	this.parseSelected = () => {
 		this.selected = JSON.parse(this.selected);
+		console.log(this.selected);
 	}
 
 	this.addModule = (module) => {
