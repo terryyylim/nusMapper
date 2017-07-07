@@ -1,0 +1,21 @@
+.bg {
+		width: 100%;
+		height: 600px;
+	}
+	#banner {
+		background-image: url("./css/landing_pagebg.jpg");
+		background-size: cover;
+		background-position: center;
+		position: absolute;
+		z-index:0;
+		left:0;
+		width: 100%;
+		height: 100%;
+	}
+	#options {
+		color: white;
+		position: center;
+	}
+	#choice {
+		background-color: black;
+	}
