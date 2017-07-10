@@ -24,7 +24,7 @@ moduleList.push(mod8);
 moduleList.push(mod9);
 //end of temporary array
 
-mainApp.factory('Mapper', ['Module', function(Module) {
+mainApp.factory('Mapper', ['Module', '$http', function(Module, $http) {
 
   var Mapper = {
   module : "",
@@ -68,9 +68,9 @@ mainApp.factory('Mapper', ['Module', function(Module) {
   	Mapper.selectedCourse = course;
   	console.log(Mapper.selectedCourse);
   	//Parse in JSON data according to which course was selected
-  	if (angular.equals(Coursereq.selectedCourse, "Business Analytics")) {
+  	if (angular.equals(Mapper.selectedCourse, "Business Analytics")) {
   			course = 1;
-  		} else if (angular.equals(Coursereq.selectedCourse, "Computer Science")) {
+  		} else if (angular.equals(Mapper.selectedCourse, "Computer Science")) {
   			course = 2;
   		}
 
