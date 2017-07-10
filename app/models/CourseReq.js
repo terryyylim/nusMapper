@@ -8,6 +8,7 @@ angular.module('myApp.coursereq', [])
 
 		selectedCourse: "",
 		coreMC: 0,
+    gemMC: 0,
 		peMC: 0,
 		internMC: 0
 	}
@@ -57,7 +58,66 @@ angular.module('myApp.coursereq', [])
   }
 
   	//Parse in JSON data according to which course was selected
-	//Still need to add moduleList.getCourseMods method into view1.js controller 	
+	//Still need to add moduleList.getCourseMods method into view1.js controller
+
+  //Business Analytics Graduation Check
+  function canIgraduate(module) { //true means can graduate
+    if (coreCleared(module) && gemCleared(module) && peCleared(module) && ueCleared(module) && internCleared(module)) {
+      return true;
+    }
+    return false;
+  }
+
+  function coreCleared(module) {
+    if (coreMC === 84) {
+      return true;
+    }
+    return false;
+  }
+  function gemCleared(module) {
+    if (gemMC === 20) {
+      return true;
+    }
+    return false;
+  }
+  function peCleared(module) {
+    if (peMC === 24) {
+      return true;
+    }
+    return false;
+  } 	
+  function ueCleared(module) {
+    if (ueMC === 20) {
+      return true;
+    }
+    return false;
+  }
+  function internCleared(module) {
+    if (internMC === 12) {
+      return true;
+    }
+    return false;
+  }
+
+  function isCore(module) {
+    for(i = 0; i < moduleList.compulsory.length; i++){ //check if it is a core
+      if(angular.equals(moduleList.compulsory[i],module)){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function isPE(module) {
+    var code = module.moduleCode;
+    //Start from index 1 because want to skip 'compulsory' mods
+    for (i = 1; i < moduleList.length; i++){
+      if (code == "BT4104" || code == "BT4104" || code == "BT4104" || code == "BT4104" || code == "BT4104") {
+        return true; //before adding to pe count, make sure that conditions are met
+      }
+      return false;
+    }
+  }
 
   return Coursereq;
 
