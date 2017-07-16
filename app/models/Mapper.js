@@ -1,75 +1,91 @@
 var mainApp = angular.module('myApp');
 
-//start of temporary array
-var moduleList = [];
+mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequisite',
+ function(Module, Gem, Core, Ue, Preclusion, Prerequisite) {
 
-var mod1 = {"moduleCode":"CS1010","moduleTitle":"Programming Methodology","moduleCredit":"4"};
-var mod2 = {"moduleCode":"CS1020","moduleTitle":"Data Structures and Algorithms I","moduleCredit":"4"};
-var mod3 = {"moduleCode":"CS1231","moduleTitle":"Discrete Structures","moduleCredit":"4"};
-var mod4 = {"moduleCode":"CS2010","moduleTitle":"Data Structures and Algorithms II","moduleCredit":"4"};
-var mod5 = {"moduleCode":"CS2100","moduleTitle":"Computer Organisation","moduleCredit":"4"};
-var mod6 = {"moduleCode":"CS2103T","moduleTitle":"Software Engineering","moduleCredit":"4"};
-var mod7 = {"moduleCode":"CS2105","moduleTitle":"Introduction to Computer Networks","moduleCredit":"4"};
-var mod8 = {"moduleCode":"CS2106","moduleTitle":"Introduction to Operating Systems","moduleCredit":"4"};
-var mod9 = {"moduleCode":"CS3230","moduleTitle":"Design and Analysis of Algorithms","moduleCredit":"4"};
-
-moduleList.push(mod1);
-moduleList.push(mod2);
-moduleList.push(mod3);
-moduleList.push(mod4);
-moduleList.push(mod5);
-moduleList.push(mod6);
-moduleList.push(mod7);
-moduleList.push(mod8);
-moduleList.push(mod9);
-//end of temporary array
-
-mainApp.factory('Mapper', ['Module', function(Module) {
+ 	Core.init();
+	Gem.init();
+	Ue.init();
+	Preclusion.init();
+	Prerequisite.init();
 
   var Mapper = {
-  module : "",
-  modules : [], 
-  core : [], 
-  csBD : [], 
-  gem : [], 
-  ue : [],
-  preclusions: [],
-  prereqList: [],
-  totalMC : 0,
-  coreMC : 0,
-  csBDMC : 0,
-  gemMC : 0,
-  ueMC : 0,
+  modules : [Core.modules, Gem.modules, Ue.modules],
+  totalMC : 0,  // recursively add all baskets?
   message : "",
+  /*
   selectedModule : false,
   selectedCourse : ""
+  */
 }
 
-// init Prereq
-
+	console.log(Mapper.modules);
+/*
 	Module.getPrereq().then((data) => {
 		//lexical this (comes with the arrow, ES6 function)
 		Mapper.prereq = data;
 	});
-
+*/
+/*
 	Module.getCourseMods().then((data) => {
 		Mapper.course = data;
 	});
-
-  //Mapper is an object with an attribute modules which is an empty array
-  var mods = Mapper.modules; //mods is an array of modules, to count total MCs
-  var core = Mapper.core; //core tracks core mods taken
-  var csBD = Mapper.csBD; //BD tracks BD mods taken
-  var gem = Mapper.gem; //gem tracks gem mods taken
-  var ue = Mapper.ue; //ue tracks ue mods taken
-  var m = Mapper;
-
+*/
+/*
   Mapper.setCourse = (course) => {
   	Mapper.selectedCourse = course;
   	console.log(Mapper.selectedCourse);
   	//Parse in JSON data according to which course was selected
   }
+*/
+	Mapper.inMapper = (list, module) => {
+		if(list == undefined){   // end of list
+			return false;
+		} else if(typeof list[0] === 'string' || list[0] instanceof String){ // if leaf
+			return(angular.equals(list[0], module) || Mapper.inMapper(list.slice(0,1),module));
+		} else{ //branch 
+			return Mapper.inMapper(list[0], module) || Mapper.inMapper(list.slice(0,1), module);
+		}
+	}
 
+	Mapper.updateMCCount = () => {
+		Mapper.totalMC = Core.totalMC + Gem.totalMC + Ue.totalMC;
+	}
+
+	Mapper.add = (module, index) => {  
+		//first check if already in mapper
+		let inCheck = !Mapper.inMapper(Mapper.modules, module); // only add if not in mapper
+		//then check if prereqs are satified
+		let prereqCheck = Prerequisite.eval_hasPrereq(Mapper.modules, module);
+		//then check that no preclus are present
+		let precluCheck = !Preclusion.eval_hasPreclu(Mapper.modules, module); // only add if no preclu
+		// only when all 3 checks pass
+		if(inCheck && prereqCheck && precluCheck){
+			// now check where to add it
+			if(Core.add(module)){
+				alert("module added to core!");
+			} else if(Gem.add(module)){
+				alert("module added to gem!");
+			} else{
+				Ue.add(module);
+				alert("module added to ue!");
+			}
+			//update mc count
+			Mapper.updateMCCount();
+		} else{
+			// use inCheck & prereqCheck & precluCheck to generate error message
+			if(!inCheck){
+				alert("You already have this module!");
+			}
+			if(!prereqCheck){
+				alert("You have not cleared the prerequisite!");
+			}
+			if(!precluCheck){
+				alert("You have a preclusion!");
+			}
+		}
+	}
+/*
   Mapper.add = (module, index) => {//add is a method of object Mapper
   	Mapper.prereqList = [];
 
@@ -278,6 +294,6 @@ mainApp.factory('Mapper', ['Module', function(Module) {
     m.totalMC -= removedmc;
   }
 //END OF REMOVE FUNCTIONS
-
+*/
 return Mapper;
 }]);

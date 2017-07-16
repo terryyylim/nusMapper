@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.view1', ['ngRoute', 'myApp.coursereq'])
+angular.module('myApp.view1', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/view1', {
@@ -10,7 +10,7 @@ angular.module('myApp.view1', ['ngRoute', 'myApp.coursereq'])
   });
 }])
 
-.controller('View1Ctrl', ["$http", "$q", "$scope", "Module", "Mapper", "Coursereq", function($http,$q, $scope, Module, Mapper, Coursereq) {
+.controller('View1Ctrl', ["$http", "$q", "$scope", "Module", "Mapper", function($http,$q, $scope, Module, Mapper) {
 	this.Mapper = Mapper;
 	var that = this;
 
