@@ -13,5 +13,49 @@ mainApp.factory('Prerequisite', ['$http', function($http) {
         });
   	console.log("Prerequisite initted");
   }
+
+  // list is list of all modules in mapper
+  // index is index of module in prereq list
+  // contain is mapper function to check if module is in modules
+  // contain(list, module) ret true if inside, false otherwise.
+  Prerequisite.eval_hasPrereq = (list, index, contain) => { 
+  	let mPrereq = Prerequisite.prereqs[index];
+  	console.log(mPrereq);
+  	return eval_h(mPrereq.prerequisite);
+
+  	// this is a little hacky, but because eval_h is defined within eval_hasPrereq, it is within
+  	// the scope of the latter's function and will be able to access list & contain (parent scope)
+
+  	function eval_h(prereq){  // v2
+		console.log(prereq);
+		//let prereq = Mapper.prereq[index].prerequisite === "undefined" ? 
+		//				Mapper.Mapper.prereq[index].prerequisite : undefined;
+		if(prereq === undefined){ //Base Case 1: No Prerequisites
+			return true; //if true, means can take this module 
+		} else if(typeof prereq === 'string' || prereq instanceof String){ //Base Case 2: Only 1 Prereq to begin with
+			console.log(contain(list, prereq));
+			return contain(list, prereq);
+		} else if(prereq.or) {
+			if(prereq.or.length > 1){
+				return eval_h(prereq.or[0]) || 
+					eval_h({"or" : prereq.or.slice(1)});
+			} else {
+				return eval_h(prereq.or[0]);
+			}
+		} else if(prereq.and) {
+			if(prereq.and.length > 1){
+				return eval_h(prereq.and[0]) && 
+					eval_h({"and" : prereq.and.slice(1)});
+			} else {
+				return eval_h(prereq.and[0]);
+			}
+		} else{
+			alert("input error");
+		}
+	}
+
+  }
+
+  
 return Prerequisite;
 }]);

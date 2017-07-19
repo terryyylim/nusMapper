@@ -10,5 +10,10 @@ mainApp.factory('Ue', [function() {
   Ue.init = () => {
   	console.log("Ue initted");
   }
+  Ue.add = (module) => {
+  	Ue.mods.push(module);
+  	Ue.totalMC = Ue.totalMC + parseInt(JSON.parse(module).moduleCredit);
+  	console.log(Ue.totalMC);
+  }
 return Ue;
 }]);

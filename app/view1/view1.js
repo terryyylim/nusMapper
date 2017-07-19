@@ -62,8 +62,8 @@ angular.module('myApp.view1', ['ngRoute'])
 	}
 
 	this.getIndex = (module) => {
-		var code = module.moduleCode;
-		//console.log(code);
+		var code = JSON.parse(module).moduleCode;
+		console.log(code);
 		for(let i = 0; i < that.modules.length; i++){
 			if(that.modules[i].moduleCode == code){
 				return i;
@@ -73,8 +73,8 @@ angular.module('myApp.view1', ['ngRoute'])
 	}
 
 	this.parseSelected = () => {
-		this.selected = JSON.parse(this.selected);
-		console.log(this.selected);
+		//this.selected = JSON.parse(this.selected);
+		//console.log(this.selected);
 	}
 
 	this.addModule = (module) => {

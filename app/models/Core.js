@@ -12,5 +12,8 @@ mainApp.factory('Core', [function() {
   Core.init = () => {
   	console.log("Core initted");
   }
+  Core.add = (module) => {
+  	return false;
+  }
 return Core;
 }]);

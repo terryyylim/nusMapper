@@ -38,13 +38,38 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
   	//Parse in JSON data according to which course was selected
   }
 */
+	Mapper.remove(list, module) => {
+		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
+			;
+			//console.log(typeof list[0]);
+		} else if(Array.isArray(list)){ // if branch
+			return Mapper.inMapper(list[0], module) || Mapper.inMapper(list.slice(1), module);
+		} else{ // leaf
+			if(list ===  undefined){ // empty array
+				;
+			} else{
+				if(angular.equals(list.moduleCode, module.moduleCode)){
+					list.splice(0,1);
+				} else{
+					Mapper.inMapper(list.slice(1),module);
+				}
+			}
+		}
+	}
+
 	Mapper.inMapper = (list, module) => {
-		if(list == undefined){   // end of list
+		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
 			return false;
-		} else if(typeof list[0] === 'string' || list[0] instanceof String){ // if leaf
-			return(angular.equals(list[0], module) || Mapper.inMapper(list.slice(0,1),module));
-		} else{ //branch 
-			return Mapper.inMapper(list[0], module) || Mapper.inMapper(list.slice(0,1), module);
+			//console.log(typeof list[0]);
+		} else if(Array.isArray(list)){ // if branch
+			return Mapper.inMapper(list[0], module) || Mapper.inMapper(list.slice(1), module);
+		} else{ // leaf
+			if(list ===  undefined){ // empty array
+				return false;
+			} else{
+				return(angular.equals(list.moduleCode, module.moduleCode) || 
+					Mapper.inMapper(list.slice(1),module));
+			}
 		}
 	}
 
@@ -54,12 +79,16 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 
 	Mapper.add = (module, index) => {  
 		//first check if already in mapper
+		console.log(index);
 		let inCheck = !Mapper.inMapper(Mapper.modules, module); // only add if not in mapper
+		console.log(inCheck);
 		//then check if prereqs are satified
-		let prereqCheck = Prerequisite.eval_hasPrereq(Mapper.modules, module);
+		let prereqCheck = Prerequisite.eval_hasPrereq(Mapper.modules, index, Mapper.inMapper);
+		console.log(prereqCheck);
 		//then check that no preclus are present
-		let precluCheck = !Preclusion.eval_hasPreclu(Mapper.modules, module); // only add if no preclu
+		let precluCheck = !Preclusion.eval_hasPreclu(Mapper.modules, index, Mapper.inMapper); // only add if no preclu
 		// only when all 3 checks pass
+		console.log(precluCheck);
 		if(inCheck && prereqCheck && precluCheck){
 			// now check where to add it
 			if(Core.add(module)){
@@ -72,6 +101,7 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 			}
 			//update mc count
 			Mapper.updateMCCount();
+			console.log(Mapper.modules);
 		} else{
 			// use inCheck & prereqCheck & precluCheck to generate error message
 			if(!inCheck){
