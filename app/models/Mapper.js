@@ -13,6 +13,7 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
   modules : [Core.modules, Gem.modules, Ue.modules],
   totalMC : 0,  // recursively add all baskets?
   message : "",
+  amodules : []
   /*
   selectedModule : false,
   selectedCourse : ""
@@ -31,6 +32,22 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 		Mapper.course = data;
 	});
 */
+
+	Mapper.flatten = (list, all) => {
+		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
+			;
+			//console.log(typeof list[0]);
+		} else if(Array.isArray(list)){ // if branch
+			Mapper.flatten(list[0]);
+			Mapper.flatten(list.slice(1));
+		} else{ // leaf
+			if(list ===  undefined){ // empty array
+				;
+			} else{
+				all.push(list);
+			}
+		}
+	}
 
   Mapper.setCourse = (course) => {
   	Mapper.selectedCourse = course;
@@ -105,6 +122,8 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 			}
 			//update mc count
 			Mapper.updateMCCount();
+			Mapper.amodules = [];
+			Mapper.flatten(Mapper.modules, Mapper.amodules);
 			console.log(Mapper.modules);
 		} else{
 			// use inCheck & prereqCheck & precluCheck to generate error message
