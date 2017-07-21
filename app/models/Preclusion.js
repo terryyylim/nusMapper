@@ -26,7 +26,7 @@ mainApp.factory('Preclusion', ['$http', function($http) {
 		//let prereq = Mapper.prereq[index].prerequisite === "undefined" ? 
 		//				Mapper.Mapper.prereq[index].prerequisite : undefined;
 		if(preclu === undefined){ //Base Case 1: No Prerequisites
-			return true; //if true, means can take this module 
+			return false; //if true, means can take this module 
 		} else if(typeof preclu === 'string' || preclu instanceof String){ //Base Case 2: Only 1 Prereq to begin with
 			return contain(list, preclu);
 		} else if(preclu.or) {
