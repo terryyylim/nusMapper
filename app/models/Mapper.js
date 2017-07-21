@@ -58,18 +58,21 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 	}
 
 	Mapper.inMapper = (list, module) => {
+		var myArray = Array.prototype.slice.call(list);
+		console.log(myArray);
+		//console.log(typeof list);
 		//console.log("x " + list);
 		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
 			return false;
 			//console.log(typeof list[0]);
 		} else if(Array.isArray(list)){ // if branch
-			return Mapper.inMapper(list[0], module) || Mapper.inMapper(list.slice(1), module);
+			return Mapper.inMapper(list[0], module) || Mapper.inMapper(myArray.slice(1), module);
 		} else{ // leaf
 			if(list ===  undefined){ // empty array
 				return false;
 			} else{
 				return(angular.equals(list.moduleCode, module.moduleCode) || 
-					Mapper.inMapper(list.slice(1),module));
+					Mapper.inMapper(myArray.slice(1),module));
 			}
 		}
 	}
