@@ -43,7 +43,7 @@
 			<img class="nusMapperLogo" src="css/nusMapperLogo.jpeg">
 		</div>-->
 		<div class="relativemapper">
-			<img class="picture" src="view1/electronics4.jpeg" width="100%" height="300">
+			<img class="picture" src="view1/landing_pagebg.jpg" width="100%" height="600" style="padding-bottom: 20px">
 			<p class="absolute-text-mapper">nusMapper</p>
 		</div>
 
@@ -61,7 +61,7 @@
 			<center><h1>Module Mapping Begins!</h1></center>
 			<!--onkeyup, is the calling of function after user releases his finger on keyboard-->
 
-			<center><input type="text" ng-model="vm.search" name="modules" class="navbar-form" id="myInput" placeholder="Type your module code here"/></center>
+			<center><input type="text" ng-model="vm.search" name="modules" class="navbar-form" id="myInput" placeholder="Type your module code here"></center>
 
 			<div ng-show="vm.modules && vm.search">
 				<form>
@@ -161,7 +161,15 @@
 				</thead>
 
 				<tbody>
-					<tr data-ng-repeat="module in vm.Mapper.core">
+					<tr data-ng-repeat="module in vm.Mapper[0][0]">
+						<td class="success">{{module.moduleCode}}</td>
+						<td class="success">{{module.moduleTitle}}</td>
+					</tr>
+					<tr data-ng-repeat="module in vm.Mapper[0][1]">
+						<td class="success">{{module.moduleCode}}</td>
+						<td class="success">{{module.moduleTitle}}</td>
+					</tr>
+					<tr data-ng-repeat="module in vm.Mapper[0][2]">
 						<td class="success">{{module.moduleCode}}</td>
 						<td class="success">{{module.moduleTitle}}</td>
 					</tr>
@@ -182,7 +190,7 @@
 				</thead>
 
 				<tbody>
-					<tr data-ng-repeat="module in vm.Mapper.modules.Gem.modules">
+					<tr data-ng-repeat="module in vm.Mapper.modules[1][0]">
 						<td class="info">{{module.moduleCode}}</td>
 						<td class="info">{{module.moduleTitle}}</td>
 					</tr>
@@ -203,7 +211,7 @@
 				</thead>
 
 				<tbody>
-					<tr data-ng-repeat="module in vm.Mapper.ue">
+					<tr data-ng-repeat="module in vm.Mapper.modules[2][0]">
 						<td class="warning">{{module.moduleCode}}</td>
 						<td class="warning">{{module.moduleTitle}}</td>
 					</tr>
