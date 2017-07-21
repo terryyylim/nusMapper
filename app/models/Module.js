@@ -27,7 +27,7 @@ mainApp.factory('Module', ['$http', '$q', function($http,$q) {
 
     Module.getCourseMods = () => {
       return $q(function(resolve,reject){
-        $http.get("nusmods/csmods.json")
+        $http.get("nusmods/bamods.json")
         .then(function(response){
           resolve(response.data);
         }).catch(function(error){

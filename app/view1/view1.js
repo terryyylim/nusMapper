@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.view1', ['ngRoute'])
+angular.module('myApp.view1', ['ngRoute', 'myApp.CourseReq'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/view1', {
@@ -10,7 +10,7 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', ["$http", "$q", "$scope", "Module", "Mapper", function($http,$q, $scope, Module, Mapper) {
+.controller('View1Ctrl', ["$http", "$q", "$scope", "Module", "Mapper", "CourseReq", function($http,$q, $scope, Module, Mapper, CourseReq) {
 	this.Mapper = Mapper;
 	var that = this;
 
@@ -58,11 +58,12 @@ angular.module('myApp.view1', ['ngRoute'])
 		var selected = $scope.selectedItem;
 		console.log(selected);
 		Mapper.setCourse(selected);
-		Coursereq.setCourse(selected);
+		CourseReq.init(selected);
 	}
 
 	this.getIndex = (module) => {
-		var code = JSON.parse(module).moduleCode;
+		console.log(module);
+		var code = module.moduleCode;
 		console.log(code);
 		for(let i = 0; i < that.modules.length; i++){
 			if(that.modules[i].moduleCode == code){
@@ -73,7 +74,7 @@ angular.module('myApp.view1', ['ngRoute'])
 	}
 
 	this.parseSelected = () => {
-		//this.selected = JSON.parse(this.selected);
+		this.selected = JSON.parse(this.selected);
 		//console.log(this.selected);
 	}
 

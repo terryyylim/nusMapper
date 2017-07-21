@@ -59,15 +59,15 @@
 				<center><p>Selected Module Code: {{vm.selected.moduleCode}}</p></center>
 				<center><p>Selected Module Title: {{vm.selected.moduleTitle}}</p></center>
 				<center><p>Selected Module Credit: {{vm.selected.moduleCredit}}</p></center>
-				<center><a href="#" class="push_button blue" ng-click="vm.addModule(vm.selected)" ng-click="vm.myPrereqCheck()">Click to add module!</a></center>
+				<center><a href="#" class="push_button blue" ng-click="vm.addModule(vm.selected)">Click to add module!</a></center>
 			</div>
 		</div>
-
+{{vm.Mapper.modules}}
 		<div class="topright">
 			<div id="totalMC">
 				Total MC Count <div id="center1">{{vm.Mapper.totalMC}}</div>
-				{{vm.Mapper.modules}}
 			</div>
+			<br>
 			<br>
 			<br>
 			<br>
@@ -77,12 +77,10 @@
 			<br>
 		</div>
 	</div>
-
-	<p id="prereqCheck"></p>
 	<!--<a href="#" class="push_button red" ng-click="vm.removeModule($index)"> Click to remove module! </a>-->
 
 	<div class="container-fluid">
-		<h1><center>All Modules</center></h1>
+		<h1>All Modules</h1>
 		<div class="scrollable">
 			<table class="table table-bordered table-hover">
 				<thead>
@@ -93,17 +91,27 @@
 					</tr>
 				</thead>
 
-				<tbody>
+				<tbody data-ng-repeat="module in vm.Mapper.modules track by $index">
 				
-					<tr data-ng-repeat="module in vm.Mapper.modules track by $index">
-						<td>{{module.moduleCode}}</td>
-						<td>{{module.moduleTitle}}</td>
+					<tr data-ng-repeat="mods in module">
+						<div data-ng-repeat="mod in mods">
+						<td>test{{mod.moduleCode}}</td>
+						<td>test{{mod.moduleTitle}}</td>
 						<td>
 							<a href="#" class="btn" ng-click="vm.removeModule($index)">Remove</a>
 						</td>
+						</div>
 					</tr>
 				</tbody>
 			</table>
+		</div>
+	</div>
+
+	<div ng-repeat='data in vm.Mapper.modules'>
+		<div ng-repeat='moduleType in data'>
+			<ul>
+				<li ng-repeat='module in moduleType'>{{module.moduleCode}}</li>
+			</ul>
 		</div>
 	</div>
 
@@ -140,7 +148,7 @@
 				</thead>
 
 				<tbody>
-				<tr data-ng-repeat="module in vm.Mapper.gem">
+				<tr data-ng-repeat="module in vm.Mapper.modules.Gem.modules">
 					<td class="info">{{module.moduleCode}}</td>
 					<td class="info">{{module.moduleTitle}}</td>
 				</tr>

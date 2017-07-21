@@ -31,14 +31,14 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 		Mapper.course = data;
 	});
 */
-/*
+
   Mapper.setCourse = (course) => {
   	Mapper.selectedCourse = course;
   	console.log(Mapper.selectedCourse);
   	//Parse in JSON data according to which course was selected
   }
-*/
-	Mapper.remove(list, module) => {
+
+	Mapper.remove = (list, module) => {
 		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
 			;
 			//console.log(typeof list[0]);
@@ -58,6 +58,7 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 	}
 
 	Mapper.inMapper = (list, module) => {
+		//console.log("x " + list);
 		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
 			return false;
 			//console.log(typeof list[0]);

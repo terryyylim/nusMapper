@@ -1,16 +1,39 @@
-var mainApp = angular.module('myApp');
+var mainApp = angular.module('myApp.CourseReq', []);
 
 mainApp.factory('CourseReq', ['$http', '$q', function($http,$q) {
   var CourseReq = {};
+  var selectedCourse = "";
+
   CourseReq.init = (course) => {
+    selectedCourse = course;
     //switch case shit;
-    $http.get("nusmods/bamods.json")
-    .then((res) =>{
-      CourseReq.data = res.data;
-    })
-    .catch((err) =>{
-      alert(err);
-    })
+    if (angular.equals(selectedCourse, "Business Analytics")) {
+      course = 1;
+    } else if (angular.equals(selectedCourse, "Computer Science")) {
+      course = 2;
+    }
+
+    switch(course) {
+      case 1:
+      $http.get("nusmods/bamods.json")
+      .then((res) =>{
+        CourseReq.data = res.data;
+        console.log(CourseReq.data);
+      })
+      .catch((err) =>{
+        alert(err);
+      });
+      break;
+      case 2:
+      $http.get("nusmods/csmods.json")
+      .then((res) =>{
+        CourseReq.data = res.data;
+      })
+      .catch((err) =>{
+        alert(err);
+      });
+      break;
+    }
   }
 
     
