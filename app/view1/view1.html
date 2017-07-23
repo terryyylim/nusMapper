@@ -152,16 +152,24 @@
 			<table class="table table-hover" id="dev-table">
 				<thead>
 					<tr class="bg-danger">
-						<th>Module Code</th>
+						<th>Module Code{{vm.Mapper.modules}}</th>
 						<th>Module Title</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					<tr data-ng-repeat="module in vm.Mapper[0][0]">
-						<td class="success">{{module.moduleCode}}</td>
-						<td class="success">{{module.moduleTitle}}</td>
-					</tr>
+					<div ng-repeat="types in vm.Mapper.modules">
+						1 {{types}}
+						<div ng-repeat="basket in types">
+							{{basket}}
+							2
+							<div data-ng-repeat="module in basket">
+								3 {{module}} {{module.moduleCode}} {{module.moduleTitle}}
+								<td class="success">{{module.moduleCode}}</td>
+								<td class="success">{{module.moduleTitle}}</td>
+							</div>
+						</div>
+					</div>
 					<tr data-ng-repeat="module in vm.Mapper[0][1]">
 						<td class="success">{{module.moduleCode}}</td>
 						<td class="success">{{module.moduleTitle}}</td>

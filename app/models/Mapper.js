@@ -63,6 +63,18 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
   	Mapper.update();
   	//Mapper.removeh(Mapper.modules, module);
   }
+  	Mapper.removehnew = (list, module) => {
+  		if(list === undefined || 
+  			(list.moduleCode !== undefined && !angular.equals(list.moduleCode, module.moduleCode))){
+  			return false;
+  		} else if(list.moduleCode !== undefined && angular.equals(list.moduleCode, module.moduleCode)){
+  			return true;
+  		} else{
+  			for(let i = 0; i < list.length; i++){
+  				Mapper.removehnew(list[i], module);
+  			}
+  		}
+  	}
 
 	Mapper.removeh = (list, module) => {
 		console.log(list);
