@@ -34,12 +34,13 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 */
 
 	Mapper.flatten = (list, all) => {
+		console.log(all);
 		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
 			;
 			//console.log(typeof list[0]);
 		} else if(Array.isArray(list)){ // if branch
-			Mapper.flatten(list[0]);
-			Mapper.flatten(list.slice(1));
+			Mapper.flatten(list[0], all);
+			Mapper.flatten(list.slice(1), all);
 		} else{ // leaf
 			if(list ===  undefined){ // empty array
 				;
@@ -124,7 +125,7 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 			Mapper.updateMCCount();
 			Mapper.amodules = [];
 			Mapper.flatten(Mapper.modules, Mapper.amodules);
-			console.log(Mapper.modules);
+			console.log(Mapper.amodules);
 		} else{
 			// use inCheck & prereqCheck & precluCheck to generate error message
 			if(!inCheck){

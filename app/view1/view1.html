@@ -125,17 +125,14 @@
 					</tr>
 				</thead>
 
-				<tbody data-ng-repeat="module in vm.Mapper.modules track by $index">
+				<tbody data-ng-repeat="module in vm.Mapper.amodules track by $index">
 
-					<tr data-ng-repeat="mods in module">
-						<div data-ng-repeat="mod in mods">
-							<td>test{{mod.moduleCode}}</td>
-							<td>test{{mod.moduleTitle}}</td>
+							<td>{{module.moduleCode}}</td>
+							<td>{{module.moduleTitle}}</td>
 							<td>
 								<a href="#" class="btn" ng-click="vm.removeModule($index)">Remove</a>
 							</td>
-						</div>
-					</tr>
+
 				</tbody>
 			</table>
 		</div>
