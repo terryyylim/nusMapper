@@ -109,7 +109,6 @@
 			<br>
 			<br>
 		</div>
-		{{vm.Mapper.modules}}
 	</div>
 	<!--<a href="#" class="push_button red" ng-click="vm.removeModule($index)"> Click to remove module! </a>-->
 
@@ -126,23 +125,13 @@
 				</thead>
 
 				<tbody data-ng-repeat="module in vm.Mapper.amodules track by $index">
-
-							<td>{{module.moduleCode}}</td>
-							<td>{{module.moduleTitle}}</td>
-							<td>
-								<a href="#" class="btn" ng-click="vm.removeModule(module)">Remove</a>
-							</td>
-
+					<td>{{module.moduleCode}}</td>
+					<td>{{module.moduleTitle}}</td>
+					<td>
+						<a href="#" class="btn" ng-click="vm.removeModule(module)">Remove</a>
+					</td>
 				</tbody>
 			</table>
-		</div>
-	</div>
-
-	<div ng-repeat='data in vm.Mapper.modules'>
-		<div ng-repeat='moduleType in data'>
-			<ul>
-				<li ng-repeat='module in moduleType'>{{module.moduleCode}}</li>
-			</ul>
 		</div>
 	</div>
 
@@ -152,29 +141,29 @@
 			<table class="table table-hover" id="dev-table">
 				<thead>
 					<tr class="bg-danger">
-						<th>Module Code{{vm.Mapper.modules}}</th>
+						<th>Module Code</th>
 						<th>Module Title</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					<div ng-repeat="types in vm.Mapper.modules">
-						1 {{types}}
+					<!--<div ng-repeat="types in vm.Mapper.modules">
 						<div ng-repeat="basket in types">
-							{{basket}}
-							2
 							<div data-ng-repeat="module in basket">
-								3 {{module}} {{module.moduleCode}} {{module.moduleTitle}}
 								<td class="success">{{module.moduleCode}}</td>
 								<td class="success">{{module.moduleTitle}}</td>
 							</div>
 						</div>
-					</div>
-					<tr data-ng-repeat="module in vm.Mapper[0][1]">
+					</div>-->
+					<tr data-ng-repeat="module in vm.Mapper.modules[0][0]">
 						<td class="success">{{module.moduleCode}}</td>
 						<td class="success">{{module.moduleTitle}}</td>
 					</tr>
-					<tr data-ng-repeat="module in vm.Mapper[0][2]">
+					<tr data-ng-repeat="module in vm.Mapper.modules[0][1]">
+						<td class="success">{{module.moduleCode}}</td>
+						<td class="success">{{module.moduleTitle}}</td>
+					</tr>
+					<tr data-ng-repeat="module in vm.Mapper.modules[0][2]">
 						<td class="success">{{module.moduleCode}}</td>
 						<td class="success">{{module.moduleTitle}}</td>
 					</tr>

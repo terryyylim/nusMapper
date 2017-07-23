@@ -25,7 +25,7 @@ mainApp.factory('CourseReq', ['$http', '$q', function($http,$q) {
       });
       break;
       case 2:
-      $http.get("nusmods/csmods.json")
+      $http.get("nusmods/csmodsnew.json")
       .then((res) =>{
         CourseReq.data = res.data;
       })

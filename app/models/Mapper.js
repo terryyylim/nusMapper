@@ -61,6 +61,7 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
   	}
   	fakeRemove();
   	Mapper.update();
+  	Mapper.totalMC = 0;
   	//Mapper.removeh(Mapper.modules, module);
   }
   	Mapper.removehnew = (list, module) => {
