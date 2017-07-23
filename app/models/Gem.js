@@ -21,25 +21,24 @@ mainApp.factory('Gem', [function() {
     let added = false; 
     if(code.slice(0,2) == "GE"){
       if(code.slice(2,3) == "S" && Gem.gesMC === 0){
-        console.log(module.moduleCredit);
         Gem.pillars.push(module);
-        Gem.gesMC = Gem.gesMC + module.moduleCredit;
+        Gem.gesMC = Gem.gesMC + parseInt(module.moduleCredit);
         added = true;
       } else if(code.slice(2,3) == "T" && Gem.getMC === 0){
         Gem.pillars.push(module);
-        Gem.getMC = Gem.getMC + module.moduleCredit;
+        Gem.getMC = Gem.getMC + parseInt(module.moduleCredit);
         added = true;
       } else if(code.slice(2,3) == "R" && Gem.gerMC === 0){
         Gem.pillars.push(module);
-        Gem.gerMC = Gem.gerMC + module.moduleCredit;
+        Gem.gerMC = Gem.gerMC + parseInt(module.moduleCredit);
         added = true;
       } else if(code.slice(2,3) == "H" && Gem.gehMC === 0){
         Gem.pillars.push(module);
-        Gem.gehMC = Gem.gehMC + module.moduleCredit;
+        Gem.gehMC = Gem.gehMC + parseInt(module.moduleCredit);
         added = true;
       } else if(code.slice(2,3) == "Q" && Gem.geqMC === 0){
         Gem.pillars.push(module);
-        Gem.geqMC = Gem.geqMC + module.moduleCredit;
+        Gem.geqMC = Gem.geqMC + parseInt(module.moduleCredit);
         added = true;
       } if(added){
         Gem.totalMC = Gem.gesMC + Gem.getMC + Gem.gerMC + Gem.gehMC + Gem.geqMC;

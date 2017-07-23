@@ -34,19 +34,21 @@ mainApp.factory('Core', ['$http', function($http) {
     let added = false;
     if(contain(Core.req.foundation, module)){
       Core.foundation.push(module);
-      Core.foundationMC = Core.foundationMC + module.moduleCredit;
+      console.log(Core.foundation);
+      Core.foundationMC = Core.foundationMC + parseInt(module.moduleCredit);
       added = true;
     } else if(contain(Core.req.specialization, module)){
       Core.specialization.push(module);
-      Core.specializationMC = Core.specializationMC + module.moduleCredit;
+      Core.specializationMC = Core.specializationMC + parseInt(module.moduleCredit);
       added = true;
     } else if(contain(Core.req.miscellaneous, module)){
       Core.miscellaneous.push(module);
-      Core.miscellaneousMC = Core.miscellaneousMC + module.moduleCredit;
+      Core.miscellaneousMC = Core.miscellaneousMC + parseInt(module.moduleCredit);
       added = true;
     }
     if(added){
       Core.totalMC = Core.foundationMC + Core.specializationMC + Core.miscellaneousMC;
+      return true;
     } else{
   	 return false;
     }
