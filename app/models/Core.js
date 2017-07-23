@@ -23,6 +23,14 @@ mainApp.factory('Core', ['$http', function($http) {
   }
   
   Core.add = (module) => {
+    const contain = (list, module) => {
+      for(let i = 0; i < list.length; i++){
+        if(list[i] == module.moduleCode){
+          return true;
+        } 
+      }
+      return false;
+    }
     let added = false;
     if(contain(Core.req.foundation, module)){
       Core.foundation.push(module);
@@ -42,14 +50,7 @@ mainApp.factory('Core', ['$http', function($http) {
     } else{
   	 return false;
     }
-    const contain = (list, module) => {
-      for(let i = 0; i < list.length; i++){
-        if(list[i] == module.moduleCode){
-          return true;
-        } 
-      }
-      return false;
-    }
+
   }
 
 return Core;

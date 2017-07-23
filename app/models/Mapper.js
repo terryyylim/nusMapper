@@ -34,7 +34,6 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 */
 
 	Mapper.flatten = (list, all) => {
-		console.log(all);
 		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
 			;
 			//console.log(typeof list[0]);
@@ -56,20 +55,34 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
   	//Parse in JSON data according to which course was selected
   }
 
-	Mapper.remove = (list, module) => {
+  Mapper.remove = (module) => {
+  	fakeRemove = () =>{
+  		Mapper.modules = [[], [], []];
+  	}
+  	fakeRemove();
+  	Mapper.update();
+  	//Mapper.removeh(Mapper.modules, module);
+  }
+
+	Mapper.removeh = (list, module) => {
+		console.log(list);
 		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
-			;
+			return false;
 			//console.log(typeof list[0]);
 		} else if(Array.isArray(list)){ // if branch
-			return Mapper.inMapper(list[0], module) || Mapper.inMapper(list.slice(1), module);
+			if(Mapper.removeh(list[0], module)){
+				list.splice(0,1);
+			} else{
+				Mapper.removeh(list.slice(1), module)
+			}
 		} else{ // leaf
 			if(list ===  undefined){ // empty array
-				;
+				return false;
 			} else{
 				if(angular.equals(list.moduleCode, module.moduleCode)){
-					list.splice(0,1);
+					return true;
 				} else{
-					Mapper.inMapper(list.slice(1),module);
+					Mapper.removeh(list.slice(1),module);
 				}
 			}
 		}
@@ -77,7 +90,6 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 
 	Mapper.inMapper = (list, module) => {
 		var myArray = Array.prototype.slice.call(list);
-		console.log(myArray);
 		//console.log(typeof list);
 		//console.log("x " + list);
 		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
@@ -97,6 +109,13 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 
 	Mapper.updateMCCount = () => {
 		Mapper.totalMC = Core.totalMC + Gem.totalMC + Ue.totalMC;
+	}
+
+	Mapper.update = () => {
+		Mapper.updateMCCount();
+		Mapper.amodules = [];
+		Mapper.flatten(Mapper.modules, Mapper.amodules);
+		console.log(Mapper.amodules);
 	}
 
 	Mapper.add = (module, index) => {  
@@ -122,10 +141,7 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 				alert("module added to ue!");
 			}
 			//update mc count
-			Mapper.updateMCCount();
-			Mapper.amodules = [];
-			Mapper.flatten(Mapper.modules, Mapper.amodules);
-			console.log(Mapper.amodules);
+			Mapper.update();
 		} else{
 			// use inCheck & prereqCheck & precluCheck to generate error message
 			if(!inCheck){

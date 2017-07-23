@@ -85,8 +85,8 @@ angular.module('myApp.view1', ['ngRoute', 'myApp.CourseReq'])
 		Mapper.add(module, index);
 	}
 
-	this.removeModule = (index) => {
-		Mapper.remove(index);
+	this.removeModule = (module) => {
+		Mapper.remove(module);
 	}
 
 }]);
