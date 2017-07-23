@@ -113,7 +113,7 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 		console.log(precluCheck);
 		if(inCheck && prereqCheck && precluCheck){
 			// now check where to add it
-			if(Core.add(module, Mapper.inMapper)){
+			if(Core.add(module)){
 				alert("module added to core!");
 			} else if(Gem.add(module)){
 				alert("module added to gem!");

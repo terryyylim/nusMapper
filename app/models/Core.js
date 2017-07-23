@@ -6,14 +6,14 @@ mainApp.factory('Core', ['$http', function($http) {
   	foundation : [],
   	specialization : [],
   	miscellaneous : [],
-  	req : {}
+  	req : {},
     foundationMC : 0,
     specializationMC : 0,
     miscellaneousMC : 0
   };
   Core.modules = [Core.foundation, Core.specialization, Core.miscellaneous];
   Core.init = () => {
-    $http.get("nusmods/csmods.json")
+    $http.get("nusmods/csmodsnew.json")
     .then((res) =>{
       Core.req = res.data;
     }).catch((err)=>{
@@ -21,7 +21,8 @@ mainApp.factory('Core', ['$http', function($http) {
     });
   	console.log("Core initted");
   }
-  Core.add = (module, contain) => {
+  
+  Core.add = (module) => {
     let added = false;
     if(contain(Core.req.foundation, module)){
       Core.foundation.push(module);
@@ -41,6 +42,15 @@ mainApp.factory('Core', ['$http', function($http) {
     } else{
   	 return false;
     }
+    const contain = (list, module) => {
+      for(let i = 0; i < list.length; i++){
+        if(list[i] == module.moduleCode){
+          return true;
+        } 
+      }
+      return false;
+    }
   }
+
 return Core;
 }]);
