@@ -54,51 +54,27 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
   	console.log(Mapper.selectedCourse);
   	//Parse in JSON data according to which course was selected
   }
-
+  //realremove
   Mapper.remove = (module) => {
-  	fakeRemove = () =>{
-  		Mapper.modules = [[], [], []];
-  	}
-  	fakeRemove();
-  	Mapper.update();
-  	//Mapper.removeh(Mapper.modules, module);
-  }
-  	Mapper.removehnew = (list, module) => {
-  		if(list === undefined || 
-  			(list.moduleCode !== undefined && !angular.equals(list.moduleCode, module.moduleCode))){
-  			return false;
-  		} else if(list.moduleCode !== undefined && angular.equals(list.moduleCode, module.moduleCode)){
-  			return true;
+
+  	const removeh = (tree, module) => {
+  		console.log(tree);
+  		tree.map((e, i) => {
+  		if(Array.isArray(e)){
+  			removeh(e, module);
   		} else{
-  			for(let i = 0; i < list.length; i++){
-  				Mapper.removehnew(list[i], module);
+  			if(angular.equals(e.moduleCode, module.moduleCode)){
+  				tree.splice(i,1);
   			}
   		}
+  	});
   	}
 
-	Mapper.removeh = (list, module) => {
-		console.log(list);
-		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
-			return false;
-			//console.log(typeof list[0]);
-		} else if(Array.isArray(list)){ // if branch
-			if(Mapper.removeh(list[0], module)){
-				list.splice(0,1);
-			} else{
-				Mapper.removeh(list.slice(1), module)
-			}
-		} else{ // leaf
-			if(list ===  undefined){ // empty array
-				return false;
-			} else{
-				if(angular.equals(list.moduleCode, module.moduleCode)){
-					return true;
-				} else{
-					Mapper.removeh(list.slice(1),module);
-				}
-			}
-		}
-	}
+  	removeh(Mapper.modules, module);
+  	Mapper.update();
+
+  }
+
 
 	Mapper.inMapper = (list, module) => {
 		var myArray = Array.prototype.slice.call(list);
