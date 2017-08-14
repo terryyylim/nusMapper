@@ -56,7 +56,6 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
   }
   //realremove
   Mapper.remove = (module) => {
-
   	const removeh = (tree, module) => {
   		console.log(tree);
   		tree.map((e, i) => {
