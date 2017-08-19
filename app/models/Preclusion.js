@@ -18,6 +18,26 @@ mainApp.factory('Preclusion', ['$http', function($http) {
   	let mPreclu = Preclusion.preclus[index];
   	return eval_h(mPreclu.preclusion);
 
+  	//overwriting contain
+  	function contain(list, moduleCode){
+  		var myArray = Array.prototype.slice.call(list);
+		console.log(list);
+		//console.log("x " + list);
+		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
+			return false;
+			//console.log(typeof list[0]);
+		} else if(Array.isArray(list)){ // if branch
+			return contain(list[0], moduleCode) || contain(myArray.slice(1), moduleCode);
+		} else{ // leaf
+			if(list ===  undefined){ // empty array
+				return false;
+			} else{
+				return(angular.equals(list.moduleCode, moduleCode) || 
+					contain(myArray.slice(1),moduleCode));
+			}
+		}
+  	}
+
   	// this is a little hacky, but because eval_h is defined within eval_hasPrereq, it is within
   	// the scope of the latter's function and will be able to access list & contain (parent scope)
 

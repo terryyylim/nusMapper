@@ -77,7 +77,7 @@ mainApp.factory('Mapper', ['Module','Gem', 'Core', 'Ue','Preclusion', 'Prerequis
 
 	Mapper.inMapper = (list, module) => {
 		var myArray = Array.prototype.slice.call(list);
-		//console.log(typeof list);
+		console.log(list);
 		//console.log("x " + list);
 		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
 			return false;

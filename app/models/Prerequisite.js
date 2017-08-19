@@ -26,6 +26,26 @@ mainApp.factory('Prerequisite', ['$http', function($http) {
   	// this is a little hacky, but because eval_h is defined within eval_hasPrereq, it is within
   	// the scope of the latter's function and will be able to access list & contain (parent scope)
 
+  	//overwriting contain
+  	function contain(list, moduleCode){
+  		var myArray = Array.prototype.slice.call(list);
+		console.log(list);
+		//console.log("x " + list);
+		if(list === undefined || (Array.isArray(list) && !list.length)){   // end of list
+			return false;
+			//console.log(typeof list[0]);
+		} else if(Array.isArray(list)){ // if branch
+			return contain(list[0], moduleCode) || contain(myArray.slice(1), moduleCode);
+		} else{ // leaf
+			if(list ===  undefined){ // empty array
+				return false;
+			} else{
+				return(angular.equals(list.moduleCode, moduleCode) || 
+					contain(myArray.slice(1),moduleCode));
+			}
+		}
+  	}
+
   	function eval_h(prereq){  // v2
 		console.log(prereq);
 		//let prereq = Mapper.prereq[index].prerequisite === "undefined" ? 
@@ -34,6 +54,7 @@ mainApp.factory('Prerequisite', ['$http', function($http) {
 			return true; //if true, means can take this module 
 		} else if(typeof prereq === 'string' || prereq instanceof String){ //Base Case 2: Only 1 Prereq to begin with
 			console.log(contain(list, prereq));
+			console.log(list);
 			return contain(list, prereq);
 		} else if(prereq.or) {
 			if(prereq.or.length > 1){
